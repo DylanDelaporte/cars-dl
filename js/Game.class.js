@@ -12,10 +12,12 @@ class Game {
 
         this.geneticDeep = new GeneticDeep({
             network: [5, [4, 3], 2],
-            population: 20
+            population: 1
         });
 
         this.cars = [];
+        this.maxSizeCar = {width: 0, height: 0};
+        this.spawn = {x: 0, y: 0, angle: 0};
 
         this.loaded = false;
     }
@@ -82,6 +84,44 @@ class Game {
                 }
 
                 console.log(widthFound, lastHeightFound, xFound, yFound);
+
+                if (widthFound > lastHeightFound) {
+                    that.maxSizeCar = {width: widthFound, height: lastHeightFound};
+
+                    if (that.nearestPixelAt(xFound, yFound, "left") >
+                        that.nearestPixelAt(xFound + widthFound, yFound, "right")) {
+                        that.spawn = {x: xFound, y: yFound, angle: 270};
+                    }
+                    else {
+                        that.spawn = {x: xFound, y: yFound, angle: 90};
+                    }
+                }
+                else {
+                    that.maxSizeCar = {width: lastHeightFound, height: widthFound};
+
+                    if (that.nearestPixelAt(xFound, yFound, "top") >
+                        that.nearestPixelAt(xFound, yFound + lastHeightFound, "bottom")) {
+                        that.spawn = {x: xFound + widthFound / 2, y: yFound + lastHeightFound, angle: 0};
+                    }
+                    else {
+                        that.spawn = {x: xFound, y: yFound, angle: 180};
+                    }
+                }
+
+                console.log(that.maxSizeCar, that.spawn);
+
+                /*
+                let topDistance = that.nearestPixelAt(xFound, yFound, "top");
+                let bottomDistance = that.nearestPixelAt(xFound, yFound, "bottom");
+                let leftDistance = that.nearestPixelAt(xFound, yFound, "left");
+                let rightDistance = that.nearestPixelAt(xFound, yFound, "right");
+
+                if (topDistance > bottomDistance && topDistance > leftDistance && topDistance > rightDistance) {
+
+                }
+                */
+
+                that.continueStart();
             }
         }
         else {
@@ -97,7 +137,12 @@ class Game {
             this.cars = [];
 
             for (let i = 0; i < networks.length; i++) {
-                this.cars.push(new Game.Car(networks[i]));
+                let car = new Game.Car(networks[i], {
+                    position: {x: this.spawn.x, y: this.spawn.y},
+                    size: {width: this.maxSizeCar.width, height: this.maxSizeCar.height}
+                });
+
+                this.cars.push(car);
             }
         }
 
@@ -122,6 +167,12 @@ class Game {
     draw() {
         console.log('drawing');
 
+        this.context.fillStyle = '#000000';
+        //this.context.rotate(0);
+
+        this.context.clearRect(0, 0, this.canvas.clientWidth, this.canvas.clientHeight);
+        this.context.putImageData(this.trackData, 0, 0);
+
         let countDead = 0;
 
         for (let i = 0; i < this.cars.length; i++) {
@@ -132,12 +183,55 @@ class Game {
                 countDead++;
                 return;
             }
+
+            console.log(car.position, car.size, car.angle);
+
+            let angle = car.angle - 90;
+            let posX = car.position.x;
+            let posY = car.position.y;
+            let width = car.size.width;
+            let height = car.size.height;
+
+
+            this.context.translate(posX, posY + height / 2);
+            this.context.rotate(angle*Math.PI/180);
+            this.context.fillRect(0, - height/2, width, height);
+            this.context.fillStyle = '#ff0000';
+            this.context.fillRect(-1, -1, 2, 2);
+
+            this.context.rotate(-angle*Math.PI/180);
+            this.context.translate(-posX, -(posY + height/2));
+
+            //calculate
+
         }
 
+        //WORKING TEST
+        /*
+        var angle = 90 - 90;
+        var posX = 10;
+        var posY = 10;
+        var width = 30;
+        var height = 15;
+
+
+        this.context.translate(posX, posY + height / 2);
+        this.context.rotate(angle*Math.PI/180);
+        this.context.fillRect(0, - height/2, width, height);
+        this.context.fillStyle = '#ff0000';
+        this.context.fillRect(-1, -1, 2, 2);
+
+        this.context.rotate(-angle*Math.PI/180);
+        this.context.translate(-posX, -(posY + height/2));
+        */
+
+
         //everyone is dead so we stop the game
+        /*
         if (countDead >= this.cars.length) {
             this.stop();
         }
+        */
 
         if (!this.stopDraw && !this.pauseDraw) {
             const that = this;
@@ -218,6 +312,8 @@ Game.Car = class {
         this.position = {x: 0, y: 0};
         this.size = {height: 15, width: 30};
 
+        this.angle = 0;
+
         this.alive = true;
 
         this.network = network;
@@ -227,10 +323,13 @@ Game.Car = class {
     }
 
     init(options) {
-        if (typeof options === Object) {
-            for (let key in Object.keys(options)) {
-                if (this.hasOwnProperty(key)) {
-                    this[key] = options[key];
+        console.log(typeof options);
+        if (typeof options === "object") {
+            const keys = Object.keys(options);
+
+            for (let i = 0; i < keys.length; i++) {
+                if (this.hasOwnProperty(keys[i])) {
+                    this[keys[i]] = options[keys[i]];
                 }
             }
         }

@@ -29,10 +29,9 @@
       <file leaf-file-name="Game.class.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/js/Game.class.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="566">
-              <caret line="205" column="21" lean-forward="false" selection-start-line="205" selection-start-column="21" selection-end-line="205" selection-end-column="21" />
+            <state relative-caret-position="642">
+              <caret line="103" column="64" lean-forward="false" selection-start-line="103" selection-start-column="64" selection-end-line="103" selection-end-column="64" />
               <folding>
-                <element signature="n#!!block;n#continueStart#0;n#Game#0" expanded="false" />
                 <element signature="n#!!block;n#pause#0;n#Game#0" expanded="false" />
                 <element signature="n#!!block;n#stop#0;n#Game#0" expanded="false" />
               </folding>
@@ -176,12 +175,12 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1518202387586</updated>
-      <workItem from="1518202389114" duration="7889000" />
+      <workItem from="1518202389114" duration="13923000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="7889000" />
+    <option name="totallyTimeSpent" value="13923000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-9" y="-9" width="1938" height="1051" extended-state="6" />
@@ -332,10 +331,9 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/js/Game.class.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="566">
-          <caret line="205" column="21" lean-forward="false" selection-start-line="205" selection-start-column="21" selection-end-line="205" selection-end-column="21" />
+        <state relative-caret-position="642">
+          <caret line="103" column="64" lean-forward="false" selection-start-line="103" selection-start-column="64" selection-end-line="103" selection-end-column="64" />
           <folding>
-            <element signature="n#!!block;n#continueStart#0;n#Game#0" expanded="false" />
             <element signature="n#!!block;n#pause#0;n#Game#0" expanded="false" />
             <element signature="n#!!block;n#stop#0;n#Game#0" expanded="false" />
           </folding>
