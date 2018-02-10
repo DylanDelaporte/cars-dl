@@ -3,6 +3,8 @@ class Game {
         this.canvas = document.getElementById(canvasId);
         this.context = this.canvas.getContext('2d');
 
+        this.trackData = null;
+
         this.fps = 1;
 
         this.pauseDraw = false;
@@ -30,16 +32,39 @@ class Game {
             image.src = 'tracks/track01.jpg';
 
             image.onload = function () {
-                console.log(image.width);
+                console.log(image.width, image.height, that.canvas.width, that.canvas.height);
+
+                let width = image.width;
+                let height = image.height;
+
+                if (image.width > that.canvas.clientWidth && image.width > image.height) {
+                    width = that.canvas.width;
+                    height = (image.height / image.width) * width;
+                }
+                else if (image.height > that.canvas.clientHeight) {
+                    height = that.canvas.height;
+                    width = (image.width / image.height) * height;
+                }
+
+                console.log('final size', width, height);
+
+                that.context.drawImage(image, 0, 0, width, height);
+                that.trackData = that.context.getImageData(0, 0, width, height);
+
+                console.log(that.getColorAtIndex(200, 50));
             }
         }
         else {
             this.continueStart();
         }
-
     }
 
-    private continueStart() {
+    getColorAtIndex(x, y) {
+        const red = y * (this.trackData.width * 4) + x * 4;
+        return [this.trackData.data[red], this.trackData.data[red + 1], this.trackData.data[red + 2], this.trackData.data[red + 3]];
+    }
+
+    continueStart() {
         if (this.stopDraw) {
             console.log('setting new network');
 
