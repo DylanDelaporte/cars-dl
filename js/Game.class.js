@@ -51,17 +51,42 @@ class Game {
                 that.context.drawImage(image, 0, 0, width, height);
                 that.trackData = that.context.getImageData(0, 0, width, height);
 
-                console.log(that.getColorAtIndex(200, 50));
+                //finding spawn
+                let widthFound = 0, heightFound = 0, lastHeightFound = 0, xFound = 0, yFound = 0, firstTime = true;
+                for (let x  = 0; x < that.trackData.width; x++) {
+                    heightFound = 0;
+
+                    for (let y = 0; y < that.trackData.height; y++) {
+                        const pixel = that.getColorAtIndex(x, y);
+
+                        if (pixel[0] < 50 && pixel[1] > 210 && pixel[2] < 50) {
+                            if (firstTime) {
+                                xFound = x;
+                                yFound = y;
+
+                                firstTime = false;
+                            }
+                            //console.log(pixel, x, y);
+                            //that.context.fillStyle = '#000000';
+                            //that.context.fillRect(x, y, 5, 5);
+                            //break;
+
+                            heightFound++;
+                        }
+                    }
+
+                    if (heightFound > 0) {
+                        widthFound++;
+                        lastHeightFound = heightFound;
+                    }
+                }
+
+                console.log(widthFound, lastHeightFound, xFound, yFound);
             }
         }
         else {
             this.continueStart();
         }
-    }
-
-    getColorAtIndex(x, y) {
-        const red = y * (this.trackData.width * 4) + x * 4;
-        return [this.trackData.data[red], this.trackData.data[red + 1], this.trackData.data[red + 2], this.trackData.data[red + 3]];
     }
 
     continueStart() {
@@ -121,6 +146,70 @@ class Game {
                 that.draw();
             }, 1000 / this.fps);
         }
+    }
+
+    getColorAtIndex(x, y) {
+        const red = y * (this.trackData.width * 4) + x * 4;
+        return [this.trackData.data[red], this.trackData.data[red + 1], this.trackData.data[red + 2], this.trackData.data[red + 3]];
+    }
+
+    /**
+     * Distance from given position to the first pixel found in the defined direction
+     * @param x position
+     * @param y position
+     * @param direction string (top, bottom, left, right)
+     */
+    nearestPixelAt(x, y, direction) {
+        let distance = 0;
+
+        switch (direction) {
+            case "top":
+                while (y > 0) {
+                    const pixel = this.getColorAtIndex(x, y);
+
+                    if (pixel[0] < 150 && pixel[1] < 150 && pixel[2] < 150)
+                        break;
+
+                    y--;
+                    distance++;
+                }
+                break;
+            case "bottom":
+                while (y < this.trackData.height) {
+                    const pixel = this.getColorAtIndex(x, y);
+
+                    if (pixel[0] < 150 && pixel[1] < 150 && pixel[2] < 150)
+                        break;
+
+                    y++;
+                    distance++;
+                }
+                break;
+            case "left":
+                while (x > 0) {
+                    const pixel = this.getColorAtIndex(x, y);
+
+                    if (pixel[0] < 150 && pixel[1] < 150 && pixel[2] < 150)
+                        break;
+
+                    x--;
+                    distance++;
+                }
+                break;
+            case "right":
+                while (x < this.trackData.width) {
+                    const pixel = this.getColorAtIndex(x, y);
+
+                    if (pixel[0] < 150 && pixel[1] < 150 && pixel[2] < 150)
+                        break;
+
+                    x++;
+                    distance++;
+                }
+                break;
+        }
+
+        return distance;
     }
 }
 
