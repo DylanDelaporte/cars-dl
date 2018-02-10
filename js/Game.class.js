@@ -11,8 +11,10 @@ class Game {
         this.stopDraw = true;
 
         this.geneticDeep = new GeneticDeep({
-            network: [/*5*/3, [4, 3], 2],
-            population: 50
+            network: [5, [4, 3], 2],
+            population: 30,
+            elitism: 0.3,
+            crossOverFactor: 0.6
         });
 
         this.cars = [];
@@ -103,6 +105,7 @@ class Game {
                         that.nearestPixelAt(xFound, yFound + lastHeightFound, "bottom")) {
                         //that.spawn = {x: xFound + widthFound / 2, y: yFound + lastHeightFound, angle: 90};
                         that.spawn = {x: xFound + widthFound / 2, y: yFound, angle: 0};
+                        //that.spawn = {x: xFound, y: yFound, angle: 270};
                     }
                     else {
                         that.spawn = {x: xFound, y: yFound, angle: 180};
@@ -217,33 +220,48 @@ class Game {
             //let yB = posX - ((height/2)) * Math.sin(car.angle*Math.PI/180);
             //let xB = posY + height/2 + ((height/2) * Math.sin(car.angle*Math.PI/180));
 
-            let xB = posX + ((height/4)*Math.cos((car.angle + 90)*Math.PI/180));
-            let yB = posY - ((height/4)*Math.sin((car.angle + 90)*Math.PI/180));
+            let xB = posX - ((height/2)*Math.sin((car.angle)*Math.PI/180));
+            let yB = posY + (height/2) - ((height/2)*Math.cos((car.angle)*Math.PI/180));
+
+            this.context.fillRect(xB, yB, 2, 2);
 
             //console.log('xB', xB, yB, ((height/2)*Math.cos((car.angle + 90)*Math.PI/180)), ((height/2)*Math.sin((car.angle + 90)*Math.PI/180)), Math.sin((car.angle + 90)*Math.PI/180));
 
-            let xD = computedX - posX + computedX90;
-            let yD = computedY - posY + computedY90;
+            let xD = computedX - posX + xB;
+            let yD = computedY - (posY + (height/2)) + yB;
 
-            //this.context.fillRect(xB, yB, 2, 2);
+            this.context.fillRect(xD, yD, 2, 2);
 
-            let sensor1 = this.nearestPixelAt(computedX, computedY, "top");
-            let sensor2 = this.nearestPixelAt(computedX, computedY, "left");
+            let xF = computedX - (xD - computedX);
+            let yF = computedY - (yD - computedY);
+
+            this.context.fillRect(xF, yF, 2, 2);
+
+            let sensor1 = this.nearestPixelAt(xD, yD, "top");
+            let sensor2 = this.nearestPixelAt(xD, yD, "left");
             let sensor3 = this.nearestPixelAt(computedX, computedY, "top");
-            let sensor4 = this.nearestPixelAt(computedX, computedY, "top");
-            let sensor5 = this.nearestPixelAt(computedX, computedY, "right");
+            let sensor4 = this.nearestPixelAt(xF, yF, "top");
+            let sensor5 = this.nearestPixelAt(xF, yF, "right");
 
             let sensor6 = this.nearestPixelAt(computedX, computedY, "bottom");
 
+            if (sensor1 > 10) sensor1 = 10;
+            if (sensor2 > 10) sensor2 = 10;
+            if (sensor3 > 10) sensor3 = 10;
+            if (sensor4 > 10) sensor4 = 10;
+            if (sensor5 > 10) sensor5 = 10;
+
+            //sensor1 = parseFloat(sensor1);
+
             //console.log(sensor2, sensor6);
 
-            if (sensor1 < 3 || sensor2 < 3 || sensor5 < 3 || sensor6 < 10) {
+            if (sensor1 < 1 || sensor2 < 1 || sensor5 < 1 || sensor6 < 10) {
                 //console.log("collision");
                 car.alive = false;
                 countDead++;
             }
 
-            const outputs = car.network.compute([sensor1, sensor2, sensor5]);
+            const outputs = car.network.compute([sensor1, sensor2, sensor3, sensor4, sensor5]);
 
             car.drive(outputs[0], outputs[1]);
 
@@ -407,7 +425,7 @@ Game.Car = class {
             Math.pow(newPosition.y - this.position.y, 2) + Math.pow(newPosition.x - this.position.x, 2));
 
         if (distance < 1) {
-            console.log('killed');
+            console.log('killed', distance);
             this.alive = false;
         }
 
