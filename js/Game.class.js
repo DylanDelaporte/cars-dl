@@ -390,8 +390,8 @@ Game.Car = class {
 
     drive(speed, angle) {
         //TODO: update speed and angle
-        const speedPixel = speed * 2;
-        const angleRange = (angle * 5); //10 degrees angle max per drive call
+        const speedPixel = (speed - 0.5) * 4;
+        const angleRange = ((angle - 0.5) * 7); //10 degrees angle max per drive call
 
         //console.log('position', speedPixel, angleRange, Math.cos(angleRange * Math.PI / 180), speedPixel * Math.cos(angleRange * Math.PI / 180));
 
@@ -403,8 +403,15 @@ Game.Car = class {
             y: this.position.y - (speedPixel * Math.sin(newAngle * Math.PI / 180))
         };
 
-        this.score += Math.sqrt(
+        const distance = Math.sqrt(
             Math.pow(newPosition.y - this.position.y, 2) + Math.pow(newPosition.x - this.position.x, 2));
+
+        if (distance < 1) {
+            console.log('killed');
+            this.alive = false;
+        }
+
+        this.score += distance;
 
         //console.log('drive', newPosition, this.position, newAngle, distance, this.score);
 
