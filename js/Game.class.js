@@ -14,6 +14,8 @@ class Game {
         });
 
         this.cars = [];
+
+        this.loaded = false;
     }
 
     setFPS(fps) {
@@ -21,6 +23,23 @@ class Game {
     }
 
     start() {
+        if (!this.loaded) {
+            const that = this;
+
+            const image = new Image();
+            image.src = 'tracks/track01.jpg';
+
+            image.onload = function () {
+                console.log(image.width);
+            }
+        }
+        else {
+            this.continueStart();
+        }
+
+    }
+
+    private continueStart() {
         if (this.stopDraw) {
             console.log('setting new network');
 
@@ -53,8 +72,25 @@ class Game {
     draw() {
         console.log('drawing');
 
+        let countDead = 0;
+
+        for (let i = 0; i < this.cars.length; i++) {
+            const car = this.cars[i];
+
+            //if car dead we didn't draw it
+            if (!car.alive) {
+                countDead++;
+                return;
+            }
+        }
+
+        //everyone is dead so we stop the game
+        if (countDead >= this.cars.length) {
+            this.stop();
+        }
+
         if (!this.stopDraw && !this.pauseDraw) {
-            let that = this;
+            const that = this;
 
             setTimeout(function () {
                 that.draw();
@@ -63,7 +99,7 @@ class Game {
     }
 }
 
-Game.Car = class Car {
+Game.Car = class {
     constructor(network, options) {
         this.position = {x: 0, y: 0};
         this.size = {height: 15, width: 30};
@@ -84,5 +120,11 @@ Game.Car = class Car {
                 }
             }
         }
+    }
+};
+
+Game.Wall = class {
+    constructor(options) {
+
     }
 };
