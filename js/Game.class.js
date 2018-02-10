@@ -256,7 +256,6 @@ class Game {
         }
         */
 
-        /*
         if (!this.stopDraw && !this.pauseDraw) {
             const that = this;
 
@@ -264,7 +263,6 @@ class Game {
                 that.draw();
             }, 1000 / this.fps);
         }
-        */
     }
 
     getColorAtIndex(x, y) {
@@ -361,7 +359,29 @@ Game.Car = class {
     }
 
     drive(speed, angle) {
-        //update score here
+        //TODO: update speed and angle
+        const speedPixel = speed * 1;
+        const angleRange = (angle * 2); //10 degrees angle max per drive call
+
+        console.log('position', speedPixel, angleRange, Math.cos(angleRange * Math.PI / 180), speedPixel * Math.cos(angleRange * Math.PI / 180));
+
+        let newAngle = this.angle + angleRange;
+        newAngle = (newAngle > 359) ? newAngle - 360 : newAngle;
+
+        const newPosition = {
+            x: this.position.x - (speedPixel * Math.cos(newAngle * Math.PI / 180)),
+            y: this.position.y - (speedPixel * Math.sin(newAngle * Math.PI / 180))
+        };
+
+        const distance = Math.sqrt(
+            Math.pow(newPosition.y - this.position.y, 2) + Math.pow(newPosition.x - this.position.x, 2));
+
+        this.score += distance;
+
+        console.log('drive', newPosition, this.position, newAngle, distance, this.score);
+
+        this.position = newPosition;
+        this.angle = newAngle;
     }
 };
 
