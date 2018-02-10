@@ -10,7 +10,7 @@ class GeneticDeep {
 
         this.options = {
             /**
-             * Logistic activation function.
+             * Sigmoid function.
              *
              * @param a Input value.
              * @return number Logistic function output.

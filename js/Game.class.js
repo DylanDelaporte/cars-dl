@@ -12,9 +12,11 @@ class Game {
 
         this.geneticDeep = new GeneticDeep({
             network: [5, [4, 3], 2],
-            population: 30,
+            population: 50,
+            /*
             elitism: 0.3,
             crossOverFactor: 0.6
+            */
         });
 
         this.cars = [];
@@ -104,7 +106,7 @@ class Game {
                     if (that.nearestPixelAt(xFound, yFound, "top") >
                         that.nearestPixelAt(xFound, yFound + lastHeightFound, "bottom")) {
                         //that.spawn = {x: xFound + widthFound / 2, y: yFound + lastHeightFound, angle: 90};
-                        that.spawn = {x: xFound + widthFound / 2, y: yFound, angle: 0};
+                        that.spawn = {x: xFound + widthFound / 2, y: yFound, angle: 14};
                         //that.spawn = {x: xFound, y: yFound, angle: 270};
                     }
                     else {
@@ -232,11 +234,15 @@ class Game {
 
             this.context.fillRect(xD, yD, 2, 2);
 
+            let xE = posX - (xB - posY);
+            let yE = (posY + (height/2)) - (yB - (posY + (height/2)));
+
             let xF = computedX - (xD - computedX);
             let yF = computedY - (yD - computedY);
 
             this.context.fillRect(xF, yF, 2, 2);
 
+            /*
             let sensor1 = this.nearestPixelAt(xD, yD, "top");
             let sensor2 = this.nearestPixelAt(xD, yD, "left");
             let sensor3 = this.nearestPixelAt(computedX, computedY, "top");
@@ -244,18 +250,33 @@ class Game {
             let sensor5 = this.nearestPixelAt(xF, yF, "right");
 
             let sensor6 = this.nearestPixelAt(computedX, computedY, "bottom");
+            */
 
-            if (sensor1 > 10) sensor1 = 10;
-            if (sensor2 > 10) sensor2 = 10;
-            if (sensor3 > 10) sensor3 = 10;
-            if (sensor4 > 10) sensor4 = 10;
-            if (sensor5 > 10) sensor5 = 10;
+            let sensor1 = this.maxDistanceCollision(computedX, computedY, xD, yD);
+            let sensor2 = this.maxDistanceCollision(xB, yB, xD, yD);
+            let sensor3 = this.maxDistanceCollision(posX, (posY + (height/2)), computedX, computedY);
+            let sensor4 = this.maxDistanceCollision(xE, yE, xF, yF);
+            let sensor5 = this.maxDistanceCollision(computedX, computedY, xF, yF);
+
+            let sensor6 = this.maxDistanceCollision(computedX, computedY, posX, (posY + (height/2)));
+
+            //console.log('xD left', sensor1, this.maxDistanceCollision(computedX, computedY, xD, yD));
+            //console.log('xF right', sensor6, this.maxDistanceCollision(computedX, computedY, xF, yF));
+            //console.log('computer top', sensor5, this.maxDistanceCollision(posX, (posY + (height/2)), computedX, computedY));
+
+            //if (sensor1 > 10) sensor1 = 10;
+            //if (sensor2 > 10) sensor2 = 10;
+            //if (sensor3 > 10) sensor3 = 10;
+            //if (sensor4 > 10) sensor4 = 10;
+            //if (sensor5 > 10) sensor5 = 10;
 
             //sensor1 = parseFloat(sensor1);
 
-            //console.log(sensor2, sensor6);
+            if (i === 0) {
+                document.getElementById('car0').innerText = sensor1 + ' ' + sensor2 + ' ' + sensor3 + ' ' + sensor4 + ' ' + sensor5;
+            }
 
-            if (sensor1 < 1 || sensor2 < 1 || sensor5 < 1 || sensor6 < 10) {
+            if (sensor1 < 1 || sensor2 < 1 || sensor5 < 1 || sensor6 < 1) {
                 //console.log("collision");
                 car.alive = false;
                 countDead++;
@@ -323,6 +344,7 @@ class Game {
      * @param direction string (top, bottom, left, right)
      */
     nearestPixelAt(x, y, direction) {
+        //TODO: solve distance calculation problem
         x = parseInt(x);
         y = parseInt(y);
 
@@ -377,6 +399,100 @@ class Game {
 
         return distance;
     }
+
+    maxDistanceCollision(x1, y1, x2, y2) {
+        let distance = 0;
+
+        if (x1 === x2) {
+            if (y1 > y2) {
+                let y = y2;
+
+                while (y > 0) {
+                    const pixel = this.getColorAtIndex(x1, y);
+
+                    if (pixel[0] < 150 && pixel[1] < 150 && pixel[2] < 150)
+                        break;
+
+                    y--;
+                    distance++;
+                }
+            }
+            else {
+                let y = y2;
+
+                while (y < this.trackData.height) {
+                    const pixel = this.getColorAtIndex(x1, y);
+
+                    if (pixel[0] < 150 && pixel[1] < 150 && pixel[2] < 150)
+                        break;
+
+                    y++;
+                    distance++;
+                }
+            }
+        }
+        else if (y1 === y2) {
+            if (x1 > x2) {
+                let x = x2;
+
+                while (x > 0) {
+                    const pixel = this.getColorAtIndex(x, y1);
+
+                    if (pixel[0] < 150 && pixel[1] < 150 && pixel[2] < 150)
+                        break;
+
+                    x--;
+                    distance++;
+                }
+            }
+            else {
+                let x = x2;
+
+                while (x < this.trackData.width) {
+                    const pixel = this.getColorAtIndex(x, y1);
+
+                    if (pixel[0] < 150 && pixel[1] < 150 && pixel[2] < 150)
+                        break;
+
+                    x++;
+                    distance++;
+                }
+            }
+        }
+        else {
+            let a = (y2 - y1) / (x2 - x1);
+
+            let b = y1 - (a*x1);
+
+            //console.log(arguments);
+            //console.log('a', a, 'b', b);
+
+            let x = parseInt(x2);
+            let y;
+
+            while (x < this.trackData.width) {
+                y = parseInt((a*x) + b);
+
+                //console.log(x, y, a, b);
+
+                //this.context.fillRect(x, y, 2, 2);
+
+                const pixel = this.getColorAtIndex(x, y);
+
+                if (pixel[0] < 150 && pixel[1] < 150 && pixel[2] < 150)
+                    break;
+
+                //console.log(distance);
+
+                x++;
+                distance++;
+            }
+
+            distance = Math.sqrt(Math.pow(y - y2, 2) + Math.pow(x - x2, 2));
+        }
+
+        return distance;
+    }
 }
 
 Game.Car = class {
@@ -424,7 +540,7 @@ Game.Car = class {
         const distance = Math.sqrt(
             Math.pow(newPosition.y - this.position.y, 2) + Math.pow(newPosition.x - this.position.x, 2));
 
-        if (distance < 1) {
+        if (distance < 0.1) {
             console.log('killed', distance);
             this.alive = false;
         }
