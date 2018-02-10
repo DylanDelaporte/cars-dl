@@ -11,8 +11,8 @@ class Game {
         this.stopDraw = true;
 
         this.geneticDeep = new GeneticDeep({
-            network: [5, [4, 3], 2],
-            population: 1
+            network: [/*5*/3, [4, 3], 2],
+            population: 50
         });
 
         this.cars = [];
@@ -34,7 +34,7 @@ class Game {
             image.src = 'tracks/track01.jpg';
 
             image.onload = function () {
-                console.log(image.width, image.height, that.canvas.width, that.canvas.height);
+                //console.log(image.width, image.height, that.canvas.width, that.canvas.height);
 
                 let width = image.width;
                 let height = image.height;
@@ -48,7 +48,7 @@ class Game {
                     width = (image.width / image.height) * height;
                 }
 
-                console.log('final size', width, height);
+                //console.log('final size', width, height);
 
                 that.context.drawImage(image, 0, 0, width, height);
                 that.trackData = that.context.getImageData(0, 0, width, height);
@@ -83,7 +83,7 @@ class Game {
                     }
                 }
 
-                console.log(widthFound, lastHeightFound, xFound, yFound);
+                //console.log(widthFound, lastHeightFound, xFound, yFound);
 
                 if (widthFound > lastHeightFound) {
                     that.maxSizeCar = {width: widthFound, height: lastHeightFound};
@@ -101,14 +101,15 @@ class Game {
 
                     if (that.nearestPixelAt(xFound, yFound, "top") >
                         that.nearestPixelAt(xFound, yFound + lastHeightFound, "bottom")) {
-                        that.spawn = {x: xFound + widthFound / 2, y: yFound + lastHeightFound, angle: 90};
+                        //that.spawn = {x: xFound + widthFound / 2, y: yFound + lastHeightFound, angle: 90};
+                        that.spawn = {x: xFound + widthFound / 2, y: yFound, angle: 0};
                     }
                     else {
                         that.spawn = {x: xFound, y: yFound, angle: 180};
                     }
                 }
 
-                console.log(that.maxSizeCar, that.spawn);
+                //console.log(that.maxSizeCar, that.spawn);
 
                 /*
                 let topDistance = that.nearestPixelAt(xFound, yFound, "top");
@@ -131,8 +132,9 @@ class Game {
 
     continueStart() {
         if (this.stopDraw) {
-            console.log('setting new network');
+            //console.log('setting new network');
 
+            //TODO: error with small population
             const networks = this.geneticDeep.nextGeneration();
             this.cars = [];
 
@@ -166,10 +168,7 @@ class Game {
     }
 
     draw() {
-        console.log('drawing');
-
-        this.context.fillStyle = '#000000';
-        //this.context.rotate(0);
+        //console.log('drawing');
 
         this.context.clearRect(0, 0, this.canvas.clientWidth, this.canvas.clientHeight);
         this.context.putImageData(this.trackData, 0, 0);
@@ -182,10 +181,10 @@ class Game {
             //if car dead we didn't draw it
             if (!car.alive) {
                 countDead++;
-                return;
+                continue;
             }
 
-            console.log(car.position, car.size, car.angle);
+            //console.log(car.position, car.size, car.angle);
 
             let angle = -car.angle;
             let posX = car.position.x;
@@ -196,6 +195,7 @@ class Game {
 
             this.context.translate(posX, posY + height / 2);
             this.context.rotate(angle*Math.PI/180);
+            this.context.fillStyle = '#000000';
             this.context.fillRect(0, - height/2, width, height);
             this.context.fillStyle = '#ff0000';
             this.context.fillRect(-1, -1, 2, 2);
@@ -206,10 +206,26 @@ class Game {
             let computedX = posX + (width * Math.cos(car.angle*Math.PI/180));
             let computedY = posY + (height/2) - (width * Math.sin(car.angle*Math.PI/180));
 
-            console.log('computed position', computedX, computedY, car.angle, Math.cos(car.angle*Math.PI/180), Math.sin(car.angle*Math.PI/180));
+            //console.log('computed position', computedX, computedY, car.angle, Math.cos(car.angle*Math.PI/180), Math.sin(car.angle*Math.PI/180));
 
-            this.context.fillStyle = '#0000ff';
+            this.context.fillStyle = '#00ffff';
             this.context.fillRect(computedX, computedY, 2, 2);
+
+            let computedX90 = posX - (height/2) - (width * Math.cos((car.angle - 90)*Math.PI/180));
+            let computedY90 = posY + (height/2) - (width * Math.sin((car.angle - 90)*Math.PI/180));
+
+            //let yB = posX - ((height/2)) * Math.sin(car.angle*Math.PI/180);
+            //let xB = posY + height/2 + ((height/2) * Math.sin(car.angle*Math.PI/180));
+
+            let xB = posX + ((height/4)*Math.cos((car.angle + 90)*Math.PI/180));
+            let yB = posY - ((height/4)*Math.sin((car.angle + 90)*Math.PI/180));
+
+            //console.log('xB', xB, yB, ((height/2)*Math.cos((car.angle + 90)*Math.PI/180)), ((height/2)*Math.sin((car.angle + 90)*Math.PI/180)), Math.sin((car.angle + 90)*Math.PI/180));
+
+            let xD = computedX - posX + computedX90;
+            let yD = computedY - posY + computedY90;
+
+            //this.context.fillRect(xB, yB, 2, 2);
 
             let sensor1 = this.nearestPixelAt(computedX, computedY, "top");
             let sensor2 = this.nearestPixelAt(computedX, computedY, "left");
@@ -217,13 +233,22 @@ class Game {
             let sensor4 = this.nearestPixelAt(computedX, computedY, "top");
             let sensor5 = this.nearestPixelAt(computedX, computedY, "right");
 
-            console.log('sensors', sensor1, sensor2, sensor3, sensor4, sensor5);
+            let sensor6 = this.nearestPixelAt(computedX, computedY, "bottom");
 
-            const outputs = car.network.compute([sensor1, sensor2, sensor3, sensor4, sensor5]);
+            //console.log(sensor2, sensor6);
+
+            if (sensor1 < 3 || sensor2 < 3 || sensor5 < 3 || sensor6 < 10) {
+                //console.log("collision");
+                car.alive = false;
+                countDead++;
+            }
+
+            const outputs = car.network.compute([sensor1, sensor2, sensor5]);
 
             car.drive(outputs[0], outputs[1]);
 
-            console.log('outputs', outputs);
+            //console.log('inputs', sensor1, sensor2, sensor3, sensor4, sensor5);
+            //console.log('outputs', outputs);
 
             //calculate
 
@@ -248,20 +273,23 @@ class Game {
         this.context.translate(-posX, -(posY + height/2));
         */
 
+        //console.log(countDead >= this.cars.length, countDead);
+
 
         //everyone is dead so we stop the game
-        /*
         if (countDead >= this.cars.length) {
+            //console.log('everyone is dead');
             this.stop();
+            this.start();
         }
-        */
+        else {
+            if (!this.stopDraw && !this.pauseDraw) {
+                const that = this;
 
-        if (!this.stopDraw && !this.pauseDraw) {
-            const that = this;
-
-            setTimeout(function () {
-                that.draw();
-            }, 1000 / this.fps);
+                setTimeout(function () {
+                    that.draw();
+                }, 1000 / this.fps);
+            }
         }
     }
 
@@ -277,6 +305,9 @@ class Game {
      * @param direction string (top, bottom, left, right)
      */
     nearestPixelAt(x, y, direction) {
+        x = parseInt(x);
+        y = parseInt(y);
+
         let distance = 0;
 
         switch (direction) {
@@ -346,7 +377,6 @@ Game.Car = class {
     }
 
     init(options) {
-        console.log(typeof options);
         if (typeof options === "object") {
             const keys = Object.keys(options);
 
@@ -360,10 +390,10 @@ Game.Car = class {
 
     drive(speed, angle) {
         //TODO: update speed and angle
-        const speedPixel = 1 * 2;
-        const angleRange = (-0.5 * 5); //10 degrees angle max per drive call
+        const speedPixel = speed * 2;
+        const angleRange = (angle * 5); //10 degrees angle max per drive call
 
-        console.log('position', speedPixel, angleRange, Math.cos(angleRange * Math.PI / 180), speedPixel * Math.cos(angleRange * Math.PI / 180));
+        //console.log('position', speedPixel, angleRange, Math.cos(angleRange * Math.PI / 180), speedPixel * Math.cos(angleRange * Math.PI / 180));
 
         let newAngle = this.angle + angleRange;
         newAngle = (newAngle > 359) ? newAngle - 360 : newAngle;
@@ -373,12 +403,10 @@ Game.Car = class {
             y: this.position.y - (speedPixel * Math.sin(newAngle * Math.PI / 180))
         };
 
-        const distance = Math.sqrt(
+        this.score += Math.sqrt(
             Math.pow(newPosition.y - this.position.y, 2) + Math.pow(newPosition.x - this.position.x, 2));
 
-        this.score += distance;
-
-        console.log('drive', newPosition, this.position, newAngle, distance, this.score);
+        //console.log('drive', newPosition, this.position, newAngle, distance, this.score);
 
         this.position = newPosition;
         this.angle = newAngle;
