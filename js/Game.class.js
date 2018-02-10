@@ -101,7 +101,7 @@ class Game {
 
                     if (that.nearestPixelAt(xFound, yFound, "top") >
                         that.nearestPixelAt(xFound, yFound + lastHeightFound, "bottom")) {
-                        that.spawn = {x: xFound + widthFound / 2, y: yFound + lastHeightFound, angle: 0};
+                        that.spawn = {x: xFound + widthFound / 2, y: yFound + lastHeightFound, angle: 90};
                     }
                     else {
                         that.spawn = {x: xFound, y: yFound, angle: 180};
@@ -139,7 +139,8 @@ class Game {
             for (let i = 0; i < networks.length; i++) {
                 let car = new Game.Car(networks[i], {
                     position: {x: this.spawn.x, y: this.spawn.y},
-                    size: {width: this.maxSizeCar.width, height: this.maxSizeCar.height}
+                    size: {width: this.maxSizeCar.width, height: this.maxSizeCar.height},
+                    angle: this.spawn.angle
                 });
 
                 this.cars.push(car);
@@ -186,7 +187,7 @@ class Game {
 
             console.log(car.position, car.size, car.angle);
 
-            let angle = car.angle - 90;
+            let angle = -car.angle;
             let posX = car.position.x;
             let posY = car.position.y;
             let width = car.size.width;
@@ -201,6 +202,28 @@ class Game {
 
             this.context.rotate(-angle*Math.PI/180);
             this.context.translate(-posX, -(posY + height/2));
+
+            let computedX = posX + (width * Math.cos(car.angle*Math.PI/180));
+            let computedY = posY + (height/2) - (width * Math.sin(car.angle*Math.PI/180));
+
+            console.log('computed position', computedX, computedY, car.angle, Math.cos(car.angle*Math.PI/180), Math.sin(car.angle*Math.PI/180));
+
+            this.context.fillStyle = '#0000ff';
+            this.context.fillRect(computedX, computedY, 2, 2);
+
+            let sensor1 = this.nearestPixelAt(computedX, computedY, "top");
+            let sensor2 = this.nearestPixelAt(computedX, computedY, "left");
+            let sensor3 = this.nearestPixelAt(computedX, computedY, "top");
+            let sensor4 = this.nearestPixelAt(computedX, computedY, "top");
+            let sensor5 = this.nearestPixelAt(computedX, computedY, "right");
+
+            console.log('sensors', sensor1, sensor2, sensor3, sensor4, sensor5);
+
+            const outputs = car.network.compute([sensor1, sensor2, sensor3, sensor4, sensor5]);
+
+            car.drive(outputs[0], outputs[1]);
+
+            console.log('outputs', outputs);
 
             //calculate
 
@@ -233,6 +256,7 @@ class Game {
         }
         */
 
+        /*
         if (!this.stopDraw && !this.pauseDraw) {
             const that = this;
 
@@ -240,6 +264,7 @@ class Game {
                 that.draw();
             }, 1000 / this.fps);
         }
+        */
     }
 
     getColorAtIndex(x, y) {
@@ -333,6 +358,10 @@ Game.Car = class {
                 }
             }
         }
+    }
+
+    drive(speed, angle) {
+        //update score here
     }
 };
 
