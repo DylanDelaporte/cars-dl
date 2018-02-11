@@ -552,6 +552,8 @@ class Game {
 Game.Car = class {
     constructor(network, options) {
         this.position = {x: 0, y: 0};
+        this.lastPosition = this.position;
+
         this.size = {height: 15, width: 30};
 
         this.angle = 0;
@@ -593,10 +595,16 @@ Game.Car = class {
             y: this.position.y - (speedPixel * Math.sin(newAngle * Math.PI / 180))
         };
 
+        /*
         const distance = Math.sqrt(
             Math.pow(newPosition.y - this.position.y, 2) + Math.pow(newPosition.x - this.position.x, 2));
+            */
 
-        if (distance < 0.1) {
+        const distance = Car.distance(this.position.x, this.position.y, newPosition.x, newPosition.y);
+
+        //console.log(distance(newPosition.x, newPosition.y, this.lastPosition.x, this.lastPosition.y));
+
+        if (Car.distance(this.lastPosition.x, this.lastPosition.y, newPosition.x, newPosition.y) < 0.5) {
             console.log('killed', distance);
             this.alive = false;
         }
@@ -605,10 +613,16 @@ Game.Car = class {
 
         //console.log('drive', newPosition, this.position, newAngle, distance, this.score);
 
+        this.lastPosition = this.position;
         this.position = newPosition;
+
         this.angle = newAngle;
 
-        return distance;
+        return Car.distance(newPosition.x, newPosition.y, this.lastPosition.x, this.lastPosition.y);
+    }
+
+    static distance(x1, y1, x2, y2) {
+        return Math.sqrt(Math.pow(y2 - y1, 2) + Math.pow(x2 - x1, 2));
     }
 };
 
