@@ -40,14 +40,19 @@ class Game {
             image.onload = function () {
                 //console.log(image.width, image.height, that.canvas.width, that.canvas.height);
 
+                that.canvas.style.height = (window.innerHeight - 100) + 'px';
+
+                that.canvas.width = that.canvas.offsetWidth;
+                that.canvas.height = window.innerHeight;
+
                 let width = image.width;
                 let height = image.height;
 
-                if (image.width > that.canvas.clientWidth && image.width > image.height) {
+                if (image.width > that.canvas.width && image.width > image.height) {
                     width = that.canvas.width;
                     height = (image.height / image.width) * width;
                 }
-                else if (image.height > that.canvas.clientHeight) {
+                else if (image.height > that.canvas.height) {
                     height = that.canvas.height;
                     width = (image.width / image.height) * height;
                 }
