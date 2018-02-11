@@ -2,7 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="0ae1fa46-e783-42c2-8caa-1a8adb41aad3" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/index.html" afterPath="$PROJECT_DIR$/index.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/Game.class.js" afterPath="$PROJECT_DIR$/js/Game.class.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/loader.js" afterPath="$PROJECT_DIR$/js/loader.js" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -19,8 +22,8 @@
       <file leaf-file-name="index.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="460">
-              <caret line="23" column="29" lean-forward="false" selection-start-line="23" selection-start-column="29" selection-end-line="23" selection-end-column="29" />
+            <state relative-caret-position="280">
+              <caret line="14" column="38" lean-forward="true" selection-start-line="14" selection-start-column="38" selection-end-line="14" selection-end-column="38" />
               <folding />
             </state>
           </provider>
@@ -49,8 +52,8 @@
       <file leaf-file-name="Game.class.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/js/Game.class.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="122">
-              <caret line="347" column="44" lean-forward="false" selection-start-line="347" selection-start-column="44" selection-end-line="347" selection-end-column="44" />
+            <state relative-caret-position="260">
+              <caret line="548" column="14" lean-forward="false" selection-start-line="548" selection-start-column="14" selection-end-line="548" selection-end-column="14" />
               <folding>
                 <element signature="n#!!block;n#pause#0;n#Game#0" expanded="false" />
               </folding>
@@ -103,8 +106,8 @@
       <file leaf-file-name="loader.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/js/loader.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="60">
-              <caret line="3" column="46" lean-forward="false" selection-start-line="3" selection-start-column="46" selection-end-line="3" selection-end-column="46" />
+            <state relative-caret-position="100">
+              <caret line="5" column="19" lean-forward="false" selection-start-line="5" selection-start-column="19" selection-end-line="5" selection-end-column="19" />
               <folding />
             </state>
           </provider>
@@ -149,11 +152,11 @@
         <option value="$PROJECT_DIR$/css.css" />
         <option value="$PROJECT_DIR$/js/lib/Network.class.js" />
         <option value="$PROJECT_DIR$/js/lib/GeneticDeep.class.js" />
-        <option value="$PROJECT_DIR$/index.html" />
         <option value="$PROJECT_DIR$/css/style.css" />
         <option value="$PROJECT_DIR$/README.md" />
-        <option value="$PROJECT_DIR$/js/loader.js" />
         <option value="$PROJECT_DIR$/js/lib/Generations.class.js" />
+        <option value="$PROJECT_DIR$/index.html" />
+        <option value="$PROJECT_DIR$/js/loader.js" />
         <option value="$PROJECT_DIR$/js/Game.class.js" />
       </list>
     </option>
@@ -261,12 +264,12 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1518202387586</updated>
-      <workItem from="1518202389114" duration="53098000" />
+      <workItem from="1518202389114" duration="57898000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="53098000" />
+    <option name="totallyTimeSpent" value="57898000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-9" y="-9" width="1938" height="1051" extended-state="6" />
@@ -368,22 +371,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="460">
-          <caret line="23" column="29" lean-forward="false" selection-start-line="23" selection-start-column="29" selection-end-line="23" selection-end-column="29" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js/loader.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="3" column="46" lean-forward="false" selection-start-line="3" selection-start-column="46" selection-end-line="3" selection-end-column="46" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/js/lib/GeneticDeep.class.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="320">
@@ -400,10 +387,26 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="280">
+          <caret line="14" column="38" lean-forward="true" selection-start-line="14" selection-start-column="38" selection-end-line="14" selection-end-column="38" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/loader.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="100">
+          <caret line="5" column="19" lean-forward="false" selection-start-line="5" selection-start-column="19" selection-end-line="5" selection-end-column="19" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/js/Game.class.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="122">
-          <caret line="347" column="44" lean-forward="false" selection-start-line="347" selection-start-column="44" selection-end-line="347" selection-end-column="44" />
+        <state relative-caret-position="260">
+          <caret line="548" column="14" lean-forward="false" selection-start-line="548" selection-start-column="14" selection-end-line="548" selection-end-column="14" />
           <folding>
             <element signature="n#!!block;n#pause#0;n#Game#0" expanded="false" />
           </folding>

@@ -242,8 +242,15 @@ class Game {
 
             this.context.fillRect(xD, yD, 2, 2);
 
-            let xE = posX - (xB - posY);
-            let yE = (posY + (height/2)) - (yB - (posY + (height/2)));
+            //let xE = posX - (xB - posY);
+            //let yE = (posY + (height/2)) - (yB - (posY + (height/2)));
+
+            let xE = posX + ((height/2)*Math.sin((car.angle)*Math.PI/180));
+            let yE = posY + (height/2) + ((height/2)*Math.cos((car.angle)*Math.PI/180));
+
+            console.log('e', ((height/2)*Math.sin((car.angle)*Math.PI/180)), (height) - ((height/2)*Math.cos((car.angle)*Math.PI/180)));
+
+            this.context.fillRect(xE, yE, 2, 2);
 
             let xF = computedX - (xD - computedX);
             let yF = computedY - (yD - computedY);
@@ -260,25 +267,29 @@ class Game {
             let sensor6 = this.nearestPixelAt(computedX, computedY, "bottom");
             */
 
+            console.log('sensors');
+
             let sensor1 = this.maxDistanceCollision(computedX, computedY, xD, yD);
             let sensor2 = this.maxDistanceCollision(xB, yB, xD, yD);
             let sensor3 = this.maxDistanceCollision(posX, (posY + (height/2)), computedX, computedY);
             let sensor4 = this.maxDistanceCollision(xE, yE, xF, yF);
             let sensor5 = this.maxDistanceCollision(computedX, computedY, xF, yF);
 
-            let sensor6 = this.maxDistanceCollision(computedX, computedY, posX, (posY + (height/2)));
+            //let sensor6 = this.maxDistanceCollision(computedX, computedY, posX, (posY + (height/2)));
 
             //console.log('xD left', sensor1, this.maxDistanceCollision(computedX, computedY, xD, yD));
             //console.log('xF right', sensor6, this.maxDistanceCollision(computedX, computedY, xF, yF));
             //console.log('computer top', sensor5, this.maxDistanceCollision(posX, (posY + (height/2)), computedX, computedY));
 
-            if (sensor1 > 30) sensor1 = 30;
-            if (sensor2 > 30) sensor2 = 30;
-            if (sensor3 > 30) sensor3 = 30;
-            if (sensor4 > 30) sensor4 = 30;
-            if (sensor5 > 30) sensor5 = 30;
+            if (sensor1 > 50) sensor1 = 50;
+            if (sensor2 > 50) sensor2 = 50;
+            if (sensor3 > 50) sensor3 = 50;
+            if (sensor4 > 50) sensor4 = 50;
+            if (sensor5 > 50) sensor5 = 50;
 
-            if (sensor1 < 1 || sensor2 < 1 || sensor5 < 1 || sensor6 < 1) {
+            console.log(sensor1, sensor2, sensor3, sensor4, sensor5);
+
+            if (sensor1 < 1 || sensor2 < 1 || sensor5 < 1/* || sensor6 < 1*/) {
                 //console.log("collision");
                 car.alive = false;
                 countDead++;
@@ -337,6 +348,7 @@ class Game {
 
     maxDistanceCollision(x1, y1, x2, y2) {
         let distance = 0;
+        let sizeRect = 2;
 
         if (x1 === x2) {
             if (y1 > y2) {
@@ -345,7 +357,7 @@ class Game {
                 while (y > 0) {
                     const pixel = this.getColorAtIndex(x1, y);
 
-                    this.context.fillRect(x1, y, 1, 1);
+                    this.context.fillRect(x1, y, sizeRect, sizeRect);
 
                     if (pixel[0] < 150 && pixel[1] < 150 && pixel[2] < 150)
                         break;
@@ -360,7 +372,7 @@ class Game {
                 while (y < this.trackData.height) {
                     const pixel = this.getColorAtIndex(x1, y);
 
-                    this.context.fillRect(x1, y, 1, 1);
+                    this.context.fillRect(x1, y, sizeRect, sizeRect);
 
                     if (pixel[0] < 150 && pixel[1] < 150 && pixel[2] < 150)
                         break;
@@ -377,7 +389,7 @@ class Game {
                 while (x > 0) {
                     const pixel = this.getColorAtIndex(x, y1);
 
-                    this.context.fillRect(x, y1, 1, 1);
+                    this.context.fillRect(x, y1, sizeRect, sizeRect);
 
                     if (pixel[0] < 150 && pixel[1] < 150 && pixel[2] < 150)
                         break;
@@ -392,7 +404,7 @@ class Game {
                 while (x < this.trackData.width) {
                     const pixel = this.getColorAtIndex(x, y1);
 
-                    this.context.fillRect(x, y1, 1, 1);
+                    this.context.fillRect(x, y1, sizeRect, sizeRect);
 
                     if (pixel[0] < 150 && pixel[1] < 150 && pixel[2] < 150)
                         break;
@@ -407,9 +419,138 @@ class Game {
 
             let b = y1 - (a*x1);
 
+            //console.log(a, b);
+
             //console.log(arguments);
             //console.log('a', a, 'b', b);
 
+            let x = parseInt(x2);
+            let y;
+
+            if (x2 > x1) {
+                while (x < this.trackData.width) {
+                    y = parseInt((a*x) + b);
+
+                    //console.log(x, y, a, b);
+
+                    this.context.fillRect(x, y, sizeRect, sizeRect);
+
+                    const pixel = this.getColorAtIndex(x, y);
+
+                    if (pixel[0] < 150 && pixel[1] < 150 && pixel[2] < 150)
+                        break;
+
+                    //console.log(distance);
+
+                    x++;
+                    distance++;
+                }
+            }
+            else {
+                while (x > 0) {
+                    y = parseInt((a*x) + b);
+
+                    if (y > y2) {
+                        y = y2 + (y - y2);
+                    }
+
+                    //console.log('while', x, y, a, b);
+
+                    this.context.fillRect(x, y, sizeRect, sizeRect);
+
+                    const pixel = this.getColorAtIndex(x, y);
+
+                    if (pixel[0] < 150 && pixel[1] < 150 && pixel[2] < 150)
+                        break;
+
+                    //console.log(distance);
+
+                    x--;
+                    distance++;
+                }
+            }
+
+            /*
+            if (x1 < x2 && y1 < y2) {
+                console.log('to positive');
+
+                while (x < this.trackData.width) {
+                    y = parseInt((a*x) + b);
+
+                    //console.log(x, y, a, b);
+
+                    this.context.fillRect(x, y, sizeRect, sizeRect);
+
+                    const pixel = this.getColorAtIndex(x, y);
+
+                    if (pixel[0] < 150 && pixel[1] < 150 && pixel[2] < 150)
+                        break;
+
+                    //console.log(distance);
+
+                    x++;
+                    distance++;
+                }
+            }
+            else {
+                console.log('to negative');
+
+                console.log(x, y2);
+
+                let lastY = y2;
+
+                while (x > 0) {
+                    y = parseInt((a*x) + b);
+
+                    if (y > y2) {
+                        y = y2 + (y - y2);
+                    }
+
+                    //console.log('while', x, y, a, b);
+
+                    this.context.fillRect(x, y, sizeRect, sizeRect);
+
+                    const pixel = this.getColorAtIndex(x, y);
+
+                    if (pixel[0] < 150 && pixel[1] < 150 && pixel[2] < 150)
+                        break;
+
+                    //console.log(distance);
+
+                    x--;
+                    distance++;
+
+                    lastY = y;
+                }
+            }
+            */
+
+
+            //console.log(x1, y1, x2, y2);
+
+            /*
+            while (x < this.trackData.width) {
+                y = parseInt((a*x) + b);
+
+                //console.log(x, y, a, b);
+
+                this.context.fillRect(x, y, sizeRect, sizeRect);
+
+                const pixel = this.getColorAtIndex(x, y);
+
+                if (pixel[0] < 150 && pixel[1] < 150 && pixel[2] < 150)
+                    break;
+
+                //console.log(distance);
+
+                x++;
+                distance++;
+            }
+            */
+
+            distance = Math.sqrt(Math.pow(y - y2, 2) + Math.pow(x - x2, 2));
+
+            /*
             let x = parseInt(x2);
             let y;
 
@@ -418,7 +559,7 @@ class Game {
 
                 //console.log(x, y, a, b);
 
-                this.context.fillRect(x, y, 1, 1);
+                this.context.fillRect(x, y, sizeRect, sizeRect);
 
                 const pixel = this.getColorAtIndex(x, y);
 
@@ -432,6 +573,7 @@ class Game {
             }
 
             distance = Math.sqrt(Math.pow(y - y2, 2) + Math.pow(x - x2, 2));
+            */
         }
 
         return distance;
