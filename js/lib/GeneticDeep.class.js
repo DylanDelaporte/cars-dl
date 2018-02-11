@@ -12,11 +12,13 @@ class GeneticDeep {
             /**
              * Sigmoid function.
              *
-             * @param a Input value.
+             * @param value Input value.
+             * @param layer from what is called this function
+             * @param layers list of all layers inside the network
              * @return number Logistic function output.
              */
-            activation: function (a) {
-                return (1 / (1 + Math.exp(-a)))
+            activation: function (value, layer, layers) {
+                return (1 / (1 + Math.exp(-value)))
             },
 
             /**

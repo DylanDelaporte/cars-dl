@@ -1,5 +1,5 @@
 class Game {
-    constructor(canvasId) {
+    constructor(canvasId, tableId) {
         this.canvas = document.getElementById(canvasId);
         this.context = this.canvas.getContext('2d');
 
@@ -11,8 +11,18 @@ class Game {
         this.stopDraw = true;
 
         this.geneticDeep = new GeneticDeep({
-            network: [5, [4, 3], 2],
-            population: 50,
+            network: [5, [100], 2],
+            population: 20,
+            mutationRate: 0.5,
+            crossOverFactor: 0.5/*,
+            activation: function (value, layer, layers) {
+                if (layer === 0) // input mapping
+                    return value;
+                else if (layer < layers.length - 1) // hidden layers
+                    return 1 / (1 + Math.pow(Math.E, -4 * value));
+                else // output layer
+                    return value;
+            }
             /*
             elitism: 0.3,
             crossOverFactor: 0.6
@@ -22,6 +32,8 @@ class Game {
         this.cars = [];
         this.maxSizeCar = {width: 0, height: 0};
         this.spawn = {x: 0, y: 0, angle: 0};
+
+        this.table = document.querySelector('#' + tableId + ' tbody');
 
         this.loaded = false;
     }
@@ -148,11 +160,20 @@ class Game {
             const networks = this.geneticDeep.nextGeneration();
             this.cars = [];
 
+            this.table.innerHTML = '';
+
             for (let i = 0; i < networks.length; i++) {
+                const tr = document.createElement('tr');
+                tr.id = 'car-row' + i;
+                tr.innerHTML = '<th>' + (i + 1) + '</th><td class="small">--</td><td class="small">--</td><td class="small">--</td>';
+
+                this.table.appendChild(tr);
+
                 let car = new Game.Car(networks[i], {
                     position: {x: this.spawn.x, y: this.spawn.y},
                     size: {width: this.maxSizeCar.width, height: this.maxSizeCar.height},
-                    angle: this.spawn.angle
+                    angle: this.spawn.angle,
+                    rowTable : document.getElementById('car-row' + i)
                 });
 
                 this.cars.push(car);
@@ -275,12 +296,6 @@ class Game {
             if (sensor4 > 30) sensor4 = 30;
             if (sensor5 > 30) sensor5 = 30;
 
-            //sensor1 = parseFloat(sensor1);
-
-            if (i === 0) {
-                document.getElementById('car0').innerText = sensor1 + ' ' + sensor2 + ' ' + sensor3 + ' ' + sensor4 + ' ' + sensor5;
-            }
-
             if (sensor1 < 1 || sensor2 < 1 || sensor5 < 1 || sensor6 < 1) {
                 //console.log("collision");
                 car.alive = false;
@@ -290,6 +305,20 @@ class Game {
             const outputs = car.network.compute([sensor1, sensor2, sensor3, sensor4, sensor5]);
 
             car.drive(outputs[0], outputs[1]);
+
+            if (car.rowTable !== null) {
+                car.rowTable.children[1].innerText = Game.cutText(sensor1, 3) + ' '
+                    + Game.cutText(sensor2, 3) + ' '
+                    + Game.cutText(sensor3, 3) + ' '
+                    + Game.cutText(sensor4, 3) + ' '
+                    + Game.cutText(sensor5, 3);
+
+                car.rowTable.children[2].innerText = Game.cutText(outputs[0], 3) + ' ' + Game.cutText(outputs[1], 3);
+                car.rowTable.children[3].innerText = Game.cutText(car.score, 3);
+
+                if (!car.alive)
+                    car.rowTable.classList.add('table-dark');
+            }
 
             //console.log('inputs', sensor1, sensor2, sensor3, sensor4, sensor5);
             //console.log('outputs', outputs);
@@ -335,6 +364,13 @@ class Game {
                 }, 1000 / this.fps);
             }
         }
+    }
+
+    static cutText(text, size) {
+        text = '' + text;
+
+        const index = text.indexOf('.');
+        return text.length > 3 ? index !== -1 ? text.substr(0, index) : text.substr(0, size) : text;
     }
 
     getColorAtIndex(x, y) {
@@ -511,6 +547,8 @@ Game.Car = class {
 
         this.network = network;
         this.score = 0;
+
+        this.rowTable = null;
 
         this.init(options);
     }

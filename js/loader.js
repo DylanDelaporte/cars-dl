@@ -1,7 +1,7 @@
 let game;
 
 function start() {
-    game = new Game('canvas');
+    game = new Game('canvas', 'cars');
     game.start();
     game.setFPS(350)
 }
