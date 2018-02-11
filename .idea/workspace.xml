@@ -2,10 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="0ae1fa46-e783-42c2-8caa-1a8adb41aad3" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tracks/track01.jpg" afterPath="$PROJECT_DIR$/tracks/track01.jpg" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/Game.class.js" afterPath="$PROJECT_DIR$/js/Game.class.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/lib/Generations.class.js" afterPath="$PROJECT_DIR$/js/lib/Generations.class.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/loader.js" afterPath="$PROJECT_DIR$/js/loader.js" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -52,8 +49,8 @@
       <file leaf-file-name="Game.class.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/js/Game.class.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="346">
-              <caret line="118" column="47" lean-forward="false" selection-start-line="118" selection-start-column="47" selection-end-line="118" selection-end-column="47" />
+            <state relative-caret-position="122">
+              <caret line="347" column="44" lean-forward="false" selection-start-line="347" selection-start-column="44" selection-end-line="347" selection-end-column="44" />
               <folding>
                 <element signature="n#!!block;n#pause#0;n#Game#0" expanded="false" />
               </folding>
@@ -264,12 +261,12 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1518202387586</updated>
-      <workItem from="1518202389114" duration="52789000" />
+      <workItem from="1518202389114" duration="53098000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="52789000" />
+    <option name="totallyTimeSpent" value="53098000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-9" y="-9" width="1938" height="1051" extended-state="6" />
@@ -405,8 +402,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/js/Game.class.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="346">
-          <caret line="118" column="47" lean-forward="false" selection-start-line="118" selection-start-column="47" selection-end-line="118" selection-end-column="47" />
+        <state relative-caret-position="122">
+          <caret line="347" column="44" lean-forward="false" selection-start-line="347" selection-start-column="44" selection-end-line="347" selection-end-column="44" />
           <folding>
             <element signature="n#!!block;n#pause#0;n#Game#0" expanded="false" />
           </folding>

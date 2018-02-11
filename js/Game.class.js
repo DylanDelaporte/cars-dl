@@ -302,37 +302,9 @@ class Game {
                 if (!car.alive)
                     car.rowTable.classList.add('table-dark');
             }
-
-            //console.log('inputs', sensor1, sensor2, sensor3, sensor4, sensor5);
-            //console.log('outputs', outputs);
-
-            //calculate
-
         }
 
         this.spanCountAlive.innerText = (this.cars.length - countDead);
-
-        //WORKING TEST
-        /*
-        var angle = 90 - 90;
-        var posX = 10;
-        var posY = 10;
-        var width = 30;
-        var height = 15;
-
-
-        this.context.translate(posX, posY + height / 2);
-        this.context.rotate(angle*Math.PI/180);
-        this.context.fillRect(0, - height/2, width, height);
-        this.context.fillStyle = '#ff0000';
-        this.context.fillRect(-1, -1, 2, 2);
-
-        this.context.rotate(-angle*Math.PI/180);
-        this.context.translate(-posX, -(posY + height/2));
-        */
-
-        //console.log(countDead >= this.cars.length, countDead);
-
 
         //everyone is dead so we stop the game
         if (countDead >= this.cars.length) {
@@ -341,7 +313,6 @@ class Game {
             this.start();
         }
         else {
-            /*
             if (!this.stopDraw && !this.pauseDraw) {
                 const that = this;
 
@@ -349,7 +320,6 @@ class Game {
                     that.draw();
                 }, 1000 / this.fps);
             }
-            */
         }
     }
 
@@ -365,69 +335,6 @@ class Game {
         return [this.trackData.data[red], this.trackData.data[red + 1], this.trackData.data[red + 2], this.trackData.data[red + 3]];
     }
 
-    /**
-     * Distance from given position to the first pixel found in the defined direction
-     * @param x position
-     * @param y position
-     * @param direction string (top, bottom, left, right)
-     */
-    nearestPixelAt(x, y, direction) {
-        //TODO: solve distance calculation problem
-        x = parseInt(x);
-        y = parseInt(y);
-
-        let distance = 0;
-
-        switch (direction) {
-            case "top":
-                while (y > 0) {
-                    const pixel = this.getColorAtIndex(x, y);
-
-                    if (pixel[0] < 150 && pixel[1] < 150 && pixel[2] < 150)
-                        break;
-
-                    y--;
-                    distance++;
-                }
-                break;
-            case "bottom":
-                while (y < this.trackData.height) {
-                    const pixel = this.getColorAtIndex(x, y);
-
-                    if (pixel[0] < 150 && pixel[1] < 150 && pixel[2] < 150)
-                        break;
-
-                    y++;
-                    distance++;
-                }
-                break;
-            case "left":
-                while (x > 0) {
-                    const pixel = this.getColorAtIndex(x, y);
-
-                    if (pixel[0] < 150 && pixel[1] < 150 && pixel[2] < 150)
-                        break;
-
-                    x--;
-                    distance++;
-                }
-                break;
-            case "right":
-                while (x < this.trackData.width) {
-                    const pixel = this.getColorAtIndex(x, y);
-
-                    if (pixel[0] < 150 && pixel[1] < 150 && pixel[2] < 150)
-                        break;
-
-                    x++;
-                    distance++;
-                }
-                break;
-        }
-
-        return distance;
-    }
-
     maxDistanceCollision(x1, y1, x2, y2) {
         let distance = 0;
 
@@ -437,6 +344,8 @@ class Game {
 
                 while (y > 0) {
                     const pixel = this.getColorAtIndex(x1, y);
+
+                    this.context.fillRect(x1, y, 1, 1);
 
                     if (pixel[0] < 150 && pixel[1] < 150 && pixel[2] < 150)
                         break;
@@ -450,6 +359,8 @@ class Game {
 
                 while (y < this.trackData.height) {
                     const pixel = this.getColorAtIndex(x1, y);
+
+                    this.context.fillRect(x1, y, 1, 1);
 
                     if (pixel[0] < 150 && pixel[1] < 150 && pixel[2] < 150)
                         break;
@@ -466,6 +377,8 @@ class Game {
                 while (x > 0) {
                     const pixel = this.getColorAtIndex(x, y1);
 
+                    this.context.fillRect(x, y1, 1, 1);
+
                     if (pixel[0] < 150 && pixel[1] < 150 && pixel[2] < 150)
                         break;
 
@@ -478,6 +391,8 @@ class Game {
 
                 while (x < this.trackData.width) {
                     const pixel = this.getColorAtIndex(x, y1);
+
+                    this.context.fillRect(x, y1, 1, 1);
 
                     if (pixel[0] < 150 && pixel[1] < 150 && pixel[2] < 150)
                         break;
@@ -503,7 +418,7 @@ class Game {
 
                 //console.log(x, y, a, b);
 
-                //this.context.fillRect(x, y, 2, 2);
+                this.context.fillRect(x, y, 1, 1);
 
                 const pixel = this.getColorAtIndex(x, y);
 
