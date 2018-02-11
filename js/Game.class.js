@@ -1,8 +1,9 @@
 class Game {
-    constructor(canvasId, tableId) {
+    constructor(canvasId, tableId, trackName) {
         this.canvas = document.getElementById(canvasId);
         this.context = this.canvas.getContext('2d');
 
+        this.trackName = trackName;
         this.trackData = null;
 
         this.fps = 1;
@@ -54,11 +55,9 @@ class Game {
             const that = this;
 
             const image = new Image();
-            image.src = 'tracks/track01.jpg';
+            image.src = 'tracks/' + this.trackName;
 
             image.onload = function () {
-                //console.log(image.width, image.height, that.canvas.width, that.canvas.height);
-
                 that.canvas.style.height = (window.innerHeight - 100) + 'px';
 
                 that.canvas.width = that.canvas.offsetWidth;
@@ -112,42 +111,19 @@ class Game {
                 if (widthFound > lastHeightFound) {
                     that.maxSizeCar = {width: widthFound, height: lastHeightFound};
 
-                    if (that.nearestPixelAt(xFound, yFound, "left") >
-                        that.nearestPixelAt(xFound + widthFound, yFound, "right")) {
-                        that.spawn = {x: xFound, y: yFound, angle: 270};
-                    }
-                    else {
-                        that.spawn = {x: xFound, y: yFound, angle: 90};
-                    }
+                    that.spawn = that.maxDistanceCollision(xFound, yFound, xFound + widthFound, yFound)
+                        > that.maxDistanceCollision(xFound + widthFound, yFound, xFound, yFound) ?
+                        {x: xFound, y: yFound, angle: 0} : {x: xFound + widthFound, y: yFound, angle: 180};
                 }
                 else {
                     that.maxSizeCar = {width: lastHeightFound, height: widthFound};
 
-                    if (that.nearestPixelAt(xFound, yFound, "top") >
-                        that.nearestPixelAt(xFound, yFound + lastHeightFound, "bottom")) {
-                        //that.spawn = {x: xFound + widthFound / 2, y: yFound + lastHeightFound, angle: 90};
-                        that.spawn = {x: xFound + widthFound / 2, y: yFound, angle: 14};
-                        //that.spawn = {x: xFound, y: yFound, angle: 270};
-                    }
-                    else {
-                        that.spawn = {x: xFound, y: yFound, angle: 180};
-                    }
+                    that.spawn = that.maxDistanceCollision(xFound, yFound, xFound, yFound + lastHeightFound) >
+                    that.maxDistanceCollision(xFound, yFound + lastHeightFound, xFound, yFound) ?
+                        {x: xFound + widthFound / 2, y: yFound, angle: 270} : {x: xFound + widthFound / 2, y: yFound + lastHeightFound, angle: 90};
                 }
 
-                //console.log(that.maxSizeCar, that.spawn);
-
-                /*
-                let topDistance = that.nearestPixelAt(xFound, yFound, "top");
-                let bottomDistance = that.nearestPixelAt(xFound, yFound, "bottom");
-                let leftDistance = that.nearestPixelAt(xFound, yFound, "left");
-                let rightDistance = that.nearestPixelAt(xFound, yFound, "right");
-
-                if (topDistance > bottomDistance && topDistance > leftDistance && topDistance > rightDistance) {
-
-                }
-                */
-
-                //that.continueStart();
+                that.continueStart();
             }
         }
         else {
@@ -365,6 +341,7 @@ class Game {
             this.start();
         }
         else {
+            /*
             if (!this.stopDraw && !this.pauseDraw) {
                 const that = this;
 
@@ -372,6 +349,7 @@ class Game {
                     that.draw();
                 }, 1000 / this.fps);
             }
+            */
         }
     }
 

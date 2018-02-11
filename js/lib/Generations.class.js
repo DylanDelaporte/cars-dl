@@ -159,7 +159,7 @@ Generations.Generation = class {
         const networks = [];
         let i;
 
-        console.log('generateNextGeneration', Math.round(this.geneticDeep.options.elitism * this.geneticDeep.options.population));
+        //console.log('generateNextGeneration', Math.round(this.geneticDeep.options.elitism * this.geneticDeep.options.population));
 
         //elitism method: the best are saved for the next generation
         for (i = 0; i < Math.round(this.geneticDeep.options.elitism * this.geneticDeep.options.population); i++) {
@@ -169,7 +169,7 @@ Generations.Generation = class {
             }
         }
 
-        console.log('random', networks.length);
+        //console.log('random', networks.length);
 
         //random method: from the first network are generated random weights
         for (i = 0; i < Math.round(this.geneticDeep.options.randomBehaviour *
@@ -189,7 +189,7 @@ Generations.Generation = class {
             }
         }
 
-        console.log('breed', networks.length);
+        //console.log('breed', networks.length);
 
         let max = 0;
 
