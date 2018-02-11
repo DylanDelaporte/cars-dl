@@ -264,11 +264,11 @@ class Game {
             //console.log('xF right', sensor6, this.maxDistanceCollision(computedX, computedY, xF, yF));
             //console.log('computer top', sensor5, this.maxDistanceCollision(posX, (posY + (height/2)), computedX, computedY));
 
-            //if (sensor1 > 10) sensor1 = 10;
-            //if (sensor2 > 10) sensor2 = 10;
-            //if (sensor3 > 10) sensor3 = 10;
-            //if (sensor4 > 10) sensor4 = 10;
-            //if (sensor5 > 10) sensor5 = 10;
+            if (sensor1 > 30) sensor1 = 30;
+            if (sensor2 > 30) sensor2 = 30;
+            if (sensor3 > 30) sensor3 = 30;
+            if (sensor4 > 30) sensor4 = 30;
+            if (sensor5 > 30) sensor5 = 30;
 
             //sensor1 = parseFloat(sensor1);
 
