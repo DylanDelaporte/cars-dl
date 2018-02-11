@@ -600,11 +600,11 @@ Game.Car = class {
             Math.pow(newPosition.y - this.position.y, 2) + Math.pow(newPosition.x - this.position.x, 2));
             */
 
-        const distance = Car.distance(this.position.x, this.position.y, newPosition.x, newPosition.y);
+        const distance = Game.Car.distance(this.position.x, this.position.y, newPosition.x, newPosition.y);
 
         //console.log(distance(newPosition.x, newPosition.y, this.lastPosition.x, this.lastPosition.y));
 
-        if (Car.distance(this.lastPosition.x, this.lastPosition.y, newPosition.x, newPosition.y) < 0.5) {
+        if (Game.Car.distance(this.lastPosition.x, this.lastPosition.y, newPosition.x, newPosition.y) < 0.5) {
             console.log('killed', distance);
             this.alive = false;
         }
@@ -618,7 +618,7 @@ Game.Car = class {
 
         this.angle = newAngle;
 
-        return Car.distance(newPosition.x, newPosition.y, this.lastPosition.x, this.lastPosition.y);
+        return Game.Car.distance(newPosition.x, newPosition.y, this.lastPosition.x, this.lastPosition.y);
     }
 
     static distance(x1, y1, x2, y2) {
