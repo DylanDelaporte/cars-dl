@@ -33,7 +33,14 @@ class Game {
         this.maxSizeCar = {width: 0, height: 0};
         this.spawn = {x: 0, y: 0, angle: 0};
 
+        this.countGenerations = 0;
+
         this.table = document.querySelector('#' + tableId + ' tbody');
+        this.spanCountGeneration = document.getElementById('countGenerations');
+        this.spanCountAlive = document.getElementById('countAlive');
+        this.spanCountPopulation = document.getElementById('countPopulation');
+
+        this.spanCountPopulation.innerText = this.geneticDeep.options.population;
 
         this.loaded = false;
     }
@@ -165,7 +172,7 @@ class Game {
             for (let i = 0; i < networks.length; i++) {
                 const tr = document.createElement('tr');
                 tr.id = 'car-row' + i;
-                tr.innerHTML = '<th>' + (i + 1) + '</th><td class="small">--</td><td class="small">--</td><td class="small">--</td>';
+                tr.innerHTML = '<th>' + (i + 1) + '</th><td class="small">--</td><td class="small">--</td><td class="small">--</td><td class="small">--</td>';
 
                 this.table.appendChild(tr);
 
@@ -182,6 +189,9 @@ class Game {
 
         this.pauseDraw = false;
         this.stopDraw = false;
+
+        this.countGenerations++;
+        this.spanCountGeneration.innerText = this.countGenerations;
 
         this.draw();
     }
@@ -304,7 +314,7 @@ class Game {
 
             const outputs = car.network.compute([sensor1, sensor2, sensor3, sensor4, sensor5]);
 
-            car.drive(outputs[0], outputs[1]);
+            const distance = car.drive(outputs[0], outputs[1]);
 
             if (car.rowTable !== null) {
                 car.rowTable.children[1].innerText = Game.cutText(sensor1, 3) + ' '
@@ -314,7 +324,8 @@ class Game {
                     + Game.cutText(sensor5, 3);
 
                 car.rowTable.children[2].innerText = Game.cutText(outputs[0], 3) + ' ' + Game.cutText(outputs[1], 3);
-                car.rowTable.children[3].innerText = Game.cutText(car.score, 3);
+                car.rowTable.children[3].innerText = Game.cutText(distance, 3, true);
+                car.rowTable.children[4].innerText = Game.cutText(car.score, 3);
 
                 if (!car.alive)
                     car.rowTable.classList.add('table-dark');
@@ -326,6 +337,8 @@ class Game {
             //calculate
 
         }
+
+        this.spanCountAlive.innerText = (this.cars.length - countDead);
 
         //WORKING TEST
         /*
@@ -366,11 +379,11 @@ class Game {
         }
     }
 
-    static cutText(text, size) {
+    static cutText(text, size, noPoints) {
         text = '' + text;
 
         const index = text.indexOf('.');
-        return text.length > 3 ? index !== -1 ? text.substr(0, index) : text.substr(0, size) : text;
+        return text.length > 3 ? index !== -1 && !noPoints ? text.substr(0, index) : text.substr(0, size) : text;
     }
 
     getColorAtIndex(x, y) {
@@ -594,6 +607,8 @@ Game.Car = class {
 
         this.position = newPosition;
         this.angle = newAngle;
+
+        return distance;
     }
 };
 

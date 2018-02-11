@@ -12,18 +12,23 @@
     <div class="col-md-8">
         <canvas id="canvas"></canvas>
     </div>
-    <div class="col-md-3">
-        <table id="cars" class="table table-sm">
-            <thead>
-            <tr>
-                <th>#</th>
-                <th>IN</th>
-                <th>OUT</th>
-                <th>Score</th>
-            </tr>
-            </thead>
-            <tbody></tbody>
-        </table>
+    <div class="col-md-4">
+        <div class="card border-light mb-3">
+            <div class="card-header">Gen. <span id="countGenerations"></span> (Alive <span id="countAlive"></span>/<span id="countPopulation"></span>)</div>
+            <table id="cars" class="table table-sm">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>IN</th>
+                    <th>OUT</th>
+                    <th>Dist.</th>
+                    <th>Score</th>
+                </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+
     </div>
 </div>
 
