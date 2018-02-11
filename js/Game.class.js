@@ -64,14 +64,10 @@ class Game {
                 that.canvas.width = that.canvas.offsetWidth;
                 that.canvas.height = window.innerHeight;
 
-                let width = image.width;
-                let height = image.height;
+                let width = that.canvas.width;
+                let height = (image.height / image.width) * width;
 
-                if (image.width > that.canvas.width && image.width > image.height) {
-                    width = that.canvas.width;
-                    height = (image.height / image.width) * width;
-                }
-                else if (image.height > that.canvas.height) {
+                if (height > that.canvas.height) {
                     height = that.canvas.height;
                     width = (image.width / image.height) * height;
                 }
@@ -151,7 +147,7 @@ class Game {
                 }
                 */
 
-                that.continueStart();
+                //that.continueStart();
             }
         }
         else {
