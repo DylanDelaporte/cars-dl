@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="0ae1fa46-e783-42c2-8caa-1a8adb41aad3" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/loader.js" afterPath="$PROJECT_DIR$/js/loader.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/Game.class.js" afterPath="$PROJECT_DIR$/js/Game.class.js" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -46,11 +46,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Game.class.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="Game.class.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/js/Game.class.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="260">
-              <caret line="548" column="14" lean-forward="false" selection-start-line="548" selection-start-column="14" selection-end-line="548" selection-end-column="14" />
+            <state relative-caret-position="450">
+              <caret line="530" column="48" lean-forward="false" selection-start-line="530" selection-start-column="48" selection-end-line="530" selection-end-column="48" />
               <folding>
                 <element signature="n#!!block;n#pause#0;n#Game#0" expanded="false" />
               </folding>
@@ -100,7 +100,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="loader.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="loader.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/js/loader.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="60">
@@ -153,8 +153,8 @@
         <option value="$PROJECT_DIR$/README.md" />
         <option value="$PROJECT_DIR$/js/lib/Generations.class.js" />
         <option value="$PROJECT_DIR$/index.html" />
-        <option value="$PROJECT_DIR$/js/Game.class.js" />
         <option value="$PROJECT_DIR$/js/loader.js" />
+        <option value="$PROJECT_DIR$/js/Game.class.js" />
       </list>
     </option>
   </component>
@@ -261,12 +261,12 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1518202387586</updated>
-      <workItem from="1518202389114" duration="58497000" />
+      <workItem from="1518202389114" duration="59409000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="58497000" />
+    <option name="totallyTimeSpent" value="59409000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-9" y="-9" width="1938" height="1051" extended-state="6" />
@@ -392,21 +392,21 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/Game.class.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="260">
-          <caret line="548" column="14" lean-forward="false" selection-start-line="548" selection-start-column="14" selection-end-line="548" selection-end-column="14" />
-          <folding>
-            <element signature="n#!!block;n#pause#0;n#Game#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/js/loader.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="60">
           <caret line="3" column="46" lean-forward="false" selection-start-line="3" selection-start-column="46" selection-end-line="3" selection-end-column="46" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/Game.class.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="450">
+          <caret line="530" column="48" lean-forward="false" selection-start-line="530" selection-start-column="48" selection-end-line="530" selection-end-column="48" />
+          <folding>
+            <element signature="n#!!block;n#pause#0;n#Game#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>

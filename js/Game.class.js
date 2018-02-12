@@ -183,7 +183,11 @@ class Game {
     draw() {
         //console.log('drawing');
 
-        this.context.clearRect(0, 0, this.canvas.clientWidth, this.canvas.clientHeight);
+        this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+        this.context.fillStyle = '#000000';
+        this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
+
         this.context.putImageData(this.trackData, 0, 0);
 
         let countDead = 0;
@@ -248,7 +252,7 @@ class Game {
             let xE = posX + ((height/2)*Math.sin((car.angle)*Math.PI/180));
             let yE = posY + (height/2) + ((height/2)*Math.cos((car.angle)*Math.PI/180));
 
-            console.log('e', ((height/2)*Math.sin((car.angle)*Math.PI/180)), (height) - ((height/2)*Math.cos((car.angle)*Math.PI/180)));
+            //console.log('e', ((height/2)*Math.sin((car.angle)*Math.PI/180)), (height) - ((height/2)*Math.cos((car.angle)*Math.PI/180)));
 
             this.context.fillRect(xE, yE, 2, 2);
 
@@ -267,7 +271,7 @@ class Game {
             let sensor6 = this.nearestPixelAt(computedX, computedY, "bottom");
             */
 
-            console.log('sensors');
+            //console.log('sensors');
 
             let sensor1 = this.maxDistanceCollision(computedX, computedY, xD, yD);
             let sensor2 = this.maxDistanceCollision(xB, yB, xD, yD);
@@ -287,7 +291,7 @@ class Game {
             if (sensor4 > 50) sensor4 = 50;
             if (sensor5 > 50) sensor5 = 50;
 
-            console.log(sensor1, sensor2, sensor3, sensor4, sensor5);
+            //console.log(sensor1, sensor2, sensor3, sensor4, sensor5);
 
             if (sensor1 < 1 || sensor2 < 1 || sensor5 < 1/* || sensor6 < 1*/) {
                 //console.log("collision");
@@ -416,13 +420,7 @@ class Game {
         }
         else {
             let a = (y2 - y1) / (x2 - x1);
-
             let b = y1 - (a*x1);
-
-            //console.log(a, b);
-
-            //console.log(arguments);
-            //console.log('a', a, 'b', b);
 
             let x = parseInt(x2);
             let y;
@@ -440,8 +438,6 @@ class Game {
                     if (pixel[0] < 150 && pixel[1] < 150 && pixel[2] < 150)
                         break;
 
-                    //console.log(distance);
-
                     x++;
                     distance++;
                 }
@@ -454,126 +450,18 @@ class Game {
                         y = y2 + (y - y2);
                     }
 
-                    //console.log('while', x, y, a, b);
-
                     this.context.fillRect(x, y, sizeRect, sizeRect);
 
                     const pixel = this.getColorAtIndex(x, y);
 
                     if (pixel[0] < 150 && pixel[1] < 150 && pixel[2] < 150)
                         break;
-
-                    //console.log(distance);
 
                     x--;
                     distance++;
                 }
             }
-
-            /*
-            if (x1 < x2 && y1 < y2) {
-                console.log('to positive');
-
-                while (x < this.trackData.width) {
-                    y = parseInt((a*x) + b);
-
-                    //console.log(x, y, a, b);
-
-                    this.context.fillRect(x, y, sizeRect, sizeRect);
-
-                    const pixel = this.getColorAtIndex(x, y);
-
-                    if (pixel[0] < 150 && pixel[1] < 150 && pixel[2] < 150)
-                        break;
-
-                    //console.log(distance);
-
-                    x++;
-                    distance++;
-                }
-            }
-            else {
-                console.log('to negative');
-
-                console.log(x, y2);
-
-                let lastY = y2;
-
-                while (x > 0) {
-                    y = parseInt((a*x) + b);
-
-                    if (y > y2) {
-                        y = y2 + (y - y2);
-                    }
-
-                    //console.log('while', x, y, a, b);
-
-                    this.context.fillRect(x, y, sizeRect, sizeRect);
-
-                    const pixel = this.getColorAtIndex(x, y);
-
-                    if (pixel[0] < 150 && pixel[1] < 150 && pixel[2] < 150)
-                        break;
-
-                    //console.log(distance);
-
-                    x--;
-                    distance++;
-
-                    lastY = y;
-                }
-            }
-            */
-
-
-            //console.log(x1, y1, x2, y2);
-
-            /*
-            while (x < this.trackData.width) {
-                y = parseInt((a*x) + b);
-
-                //console.log(x, y, a, b);
-
-                this.context.fillRect(x, y, sizeRect, sizeRect);
-
-                const pixel = this.getColorAtIndex(x, y);
-
-                if (pixel[0] < 150 && pixel[1] < 150 && pixel[2] < 150)
-                    break;
-
-                //console.log(distance);
-
-                x++;
-                distance++;
-            }
-            */
-
             distance = Math.sqrt(Math.pow(y - y2, 2) + Math.pow(x - x2, 2));
-
-            /*
-            let x = parseInt(x2);
-            let y;
-
-            while (x < this.trackData.width) {
-                y = parseInt((a*x) + b);
-
-                //console.log(x, y, a, b);
-
-                this.context.fillRect(x, y, sizeRect, sizeRect);
-
-                const pixel = this.getColorAtIndex(x, y);
-
-                if (pixel[0] < 150 && pixel[1] < 150 && pixel[2] < 150)
-                    break;
-
-                //console.log(distance);
-
-                x++;
-                distance++;
-            }
-
-            distance = Math.sqrt(Math.pow(y - y2, 2) + Math.pow(x - x2, 2));
-            */
         }
 
         return distance;
@@ -636,10 +524,11 @@ Game.Car = class {
         //console.log(distance(newPosition.x, newPosition.y, this.lastPosition.x, this.lastPosition.y));
 
         if (Game.Car.distance(this.lastPosition.x, this.lastPosition.y, newPosition.x, newPosition.y) < 0.5) {
-            console.log('killed', distance);
+            //console.log('killed', distance);
             this.alive = false;
         }
 
+        //TODO: calculate score if car goes back
         this.score += distance;
 
         //console.log('drive', newPosition, this.position, newAngle, distance, this.score);
