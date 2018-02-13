@@ -1,10 +1,13 @@
 class Game {
-    constructor(canvasId, tableId, trackName) {
+    constructor(canvasId, tableId, trackName, carName) {
         this.canvas = document.getElementById(canvasId);
         this.context = this.canvas.getContext('2d');
 
         this.trackName = trackName;
         this.trackData = null;
+
+        this.carName = carName;
+        this.carImage = null;
 
         this.fps = 1;
 
@@ -54,77 +57,86 @@ class Game {
         if (!this.loaded) {
             const that = this;
 
-            const image = new Image();
-            image.src = 'tracks/' + this.trackName;
+            function loadTrack() {
+                const image = new Image();
+                image.src = 'tracks/' + that.trackName;
 
-            image.onload = function () {
-                that.canvas.style.height = (window.innerHeight - 100) + 'px';
+                image.onload = function () {
+                    that.canvas.style.height = (window.innerHeight - 100) + 'px';
 
-                that.canvas.width = that.canvas.offsetWidth;
-                that.canvas.height = window.innerHeight;
+                    that.canvas.width = that.canvas.offsetWidth;
+                    that.canvas.height = window.innerHeight;
 
-                let width = that.canvas.width;
-                let height = (image.height / image.width) * width;
+                    let width = that.canvas.width;
+                    let height = (image.height / image.width) * width;
 
-                if (height > that.canvas.height) {
-                    height = that.canvas.height;
-                    width = (image.width / image.height) * height;
-                }
+                    if (height > that.canvas.height) {
+                        height = that.canvas.height;
+                        width = (image.width / image.height) * height;
+                    }
 
-                //console.log('final size', width, height);
+                    //console.log('final size', width, height);
 
-                that.context.drawImage(image, 0, 0, width, height);
-                that.trackData = that.context.getImageData(0, 0, width, height);
+                    that.context.drawImage(image, 0, 0, width, height);
+                    that.trackData = that.context.getImageData(0, 0, width, height);
 
-                //finding spawn
-                let widthFound = 0, heightFound = 0, lastHeightFound = 0, xFound = 0, yFound = 0, firstTime = true;
-                for (let x  = 0; x < that.trackData.width; x++) {
-                    heightFound = 0;
+                    //finding spawn
+                    let widthFound = 0, heightFound = 0, lastHeightFound = 0, xFound = 0, yFound = 0, firstTime = true;
+                    for (let x  = 0; x < that.trackData.width; x++) {
+                        heightFound = 0;
 
-                    for (let y = 0; y < that.trackData.height; y++) {
-                        const pixel = that.getColorAtIndex(x, y);
+                        for (let y = 0; y < that.trackData.height; y++) {
+                            const pixel = that.getColorAtIndex(x, y);
 
-                        if (pixel[0] < 50 && pixel[1] > 210 && pixel[2] < 50) {
-                            if (firstTime) {
-                                xFound = x;
-                                yFound = y;
+                            if (pixel[0] < 50 && pixel[1] > 210 && pixel[2] < 50) {
+                                if (firstTime) {
+                                    xFound = x;
+                                    yFound = y;
 
-                                firstTime = false;
+                                    firstTime = false;
+                                }
+                                //console.log(pixel, x, y);
+                                //that.context.fillStyle = '#000000';
+                                //that.context.fillRect(x, y, 5, 5);
+                                //break;
+
+                                heightFound++;
                             }
-                            //console.log(pixel, x, y);
-                            //that.context.fillStyle = '#000000';
-                            //that.context.fillRect(x, y, 5, 5);
-                            //break;
+                        }
 
-                            heightFound++;
+                        if (heightFound > 0) {
+                            widthFound++;
+                            lastHeightFound = heightFound;
                         }
                     }
 
-                    if (heightFound > 0) {
-                        widthFound++;
-                        lastHeightFound = heightFound;
-                    }
-                }
+                    //console.log(widthFound, lastHeightFound, xFound, yFound);
 
-                //console.log(widthFound, lastHeightFound, xFound, yFound);
+                    if (widthFound > lastHeightFound) {
+                        that.maxSizeCar = {width: widthFound, height: lastHeightFound};
 
-                if (widthFound > lastHeightFound) {
-                    that.maxSizeCar = {width: widthFound, height: lastHeightFound};
-
-                    that.spawn = that.maxDistanceCollision(xFound, yFound, xFound + widthFound, yFound)
+                        that.spawn = that.maxDistanceCollision(xFound, yFound, xFound + widthFound, yFound)
                         > that.maxDistanceCollision(xFound + widthFound, yFound, xFound, yFound) ?
-                        {x: xFound, y: yFound, angle: 0} : {x: xFound + widthFound, y: yFound, angle: 180};
-                }
-                else {
-                    that.maxSizeCar = {width: lastHeightFound, height: widthFound};
+                            {x: xFound, y: yFound, angle: 0} : {x: xFound + widthFound, y: yFound, angle: 180};
+                    }
+                    else {
+                        that.maxSizeCar = {width: lastHeightFound, height: widthFound};
 
-                    that.spawn = that.maxDistanceCollision(xFound, yFound, xFound, yFound + lastHeightFound) >
-                    that.maxDistanceCollision(xFound, yFound + lastHeightFound, xFound, yFound) ?
-                        {x: xFound + widthFound / 2, y: yFound, angle: 270} : {x: xFound + widthFound / 2, y: yFound + lastHeightFound, angle: 90};
-                }
+                        that.spawn = that.maxDistanceCollision(xFound, yFound, xFound, yFound + lastHeightFound) >
+                        that.maxDistanceCollision(xFound, yFound + lastHeightFound, xFound, yFound) ?
+                            {x: xFound + widthFound / 2, y: yFound, angle: 270} : {x: xFound + widthFound / 2, y: yFound + lastHeightFound, angle: 90};
+                    }
 
-                that.continueStart();
+                    that.continueStart();
+                }
             }
+
+            this.carImage = new Image();
+            this.carImage.src = 'tiles/' + that.carName;
+
+            this.carImage.onload = loadTrack;
+
+
         }
         else {
             this.continueStart();
@@ -212,10 +224,12 @@ class Game {
 
             this.context.translate(posX, posY + height / 2);
             this.context.rotate(angle*Math.PI/180);
-            this.context.fillStyle = '#000000';
-            this.context.fillRect(0, - height/2, width, height);
-            this.context.fillStyle = '#ff0000';
-            this.context.fillRect(-1, -1, 2, 2);
+            //this.context.fillStyle = '#000000';
+            //this.context.fillRect(0, - height/2, width, height);
+            //this.context.fillStyle = '#ff0000';
+            //this.context.fillRect(-1, -1, 2, 2);
+
+            this.context.drawImage(this.carImage, 0, -height/2, width, (this.carImage.height / this.carImage.width) * width);
 
             this.context.rotate(-angle*Math.PI/180);
             this.context.translate(-posX, -(posY + height/2));

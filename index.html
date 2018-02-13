@@ -10,9 +10,38 @@
 <body>
 <div class="row">
     <div class="col-md-8">
+        <form id="playForm" class="form-inline navbar">
+            <div class="input-group mb-2 mr-sm-2">
+                <div class="input-group-prepend">
+                    <div class="input-group-text">Track</div>
+                </div>
+                <select id="trackSelector" name="track" class="form-control"></select>
+            </div>
+            <div class="input-group mb-2 mr-sm-2">
+                <div class="input-group-prepend">
+                    <div class="input-group-text">Population</div>
+                </div>
+                <input name="population" type="number" class="form-control" min="10" max="50" step="1" value="20">
+            </div>
+            <div class="input-group mb-2 mr-sm-2">
+                <div class="input-group-prepend">
+                    <div class="input-group-text">Mutation rate</div>
+                </div>
+                <input name="mutationRate" type="number" class="form-control" min="0.1" max="0.9" step="0.1"
+                       value="0.5">
+            </div>
+            <div class="input-group mb-2 mr-sm-2">
+                <div class="input-group-prepend">
+                    <div class="input-group-text">Mutation rate</div>
+                </div>
+                <input name="fps" type="number" class="form-control" min="10" max="600" step="20" value="350">
+            </div>
+            <div class="btn-group">
+                <button type="submit" class="btn btn-primary mb-2">Update & Play</button>
+                <button type="submit" class="btn btn-danger mb-2">Stop</button>
+            </div>
+        </form>
         <canvas id="canvas"></canvas>
-        <button onclick="game.start()">Start</button>
-        <button onclick="game.pause()">Pause</button>
     </div>
     <div class="col-md-4">
         <div class="card border-light mb-3">
