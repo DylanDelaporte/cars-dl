@@ -229,7 +229,7 @@ class Game {
             //this.context.fillStyle = '#ff0000';
             //this.context.fillRect(-1, -1, 2, 2);
 
-            this.context.drawImage(this.carImage, 0, -height/2, width, (this.carImage.height / this.carImage.width) * width);
+            this.context.drawImage(this.carImage, 0, -height/2, width, /*(this.carImage.height / this.carImage.width) * width*/height);
 
             this.context.rotate(-angle*Math.PI/180);
             this.context.translate(-posX, -(posY + height/2));
@@ -274,18 +274,6 @@ class Game {
             let yF = computedY - (yD - computedY);
 
             this.context.fillRect(xF, yF, 2, 2);
-
-            /*
-            let sensor1 = this.nearestPixelAt(xD, yD, "top");
-            let sensor2 = this.nearestPixelAt(xD, yD, "left");
-            let sensor3 = this.nearestPixelAt(computedX, computedY, "top");
-            let sensor4 = this.nearestPixelAt(xF, yF, "top");
-            let sensor5 = this.nearestPixelAt(xF, yF, "right");
-
-            let sensor6 = this.nearestPixelAt(computedX, computedY, "bottom");
-            */
-
-            //console.log('sensors');
 
             let sensor1 = this.maxDistanceCollision(computedX, computedY, xD, yD);
             let sensor2 = this.maxDistanceCollision(xB, yB, xD, yD);

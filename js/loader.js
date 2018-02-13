@@ -40,6 +40,8 @@ function start() {
             game.stop();
         }
     };
+
+    //form.submit();
 }
 
 window.onload = start;
