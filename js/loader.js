@@ -34,6 +34,12 @@ function start() {
 
         return false;
     };
+
+    document.getElementById('stopButton').onclick = function () {
+        if (game != null) {
+            game.stop();
+        }
+    };
 }
 
 window.onload = start;
