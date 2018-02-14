@@ -345,11 +345,14 @@ class Game {
 
     maxDistanceCollision(x1, y1, x2, y2) {
         let distance = 0;
-        let sizeRect = 2;
+        let sizeRect = 1;
 
         if (x1 === x2) {
+            console.log('same x');
+
             if (y1 > y2) {
-                let y = y2;
+                let y = parseInt(y2);
+                x1 = parseInt(x1);
 
                 while (y > 0) {
                     const pixel = this.getColorAtIndex(x1, y);
@@ -364,7 +367,8 @@ class Game {
                 }
             }
             else {
-                let y = y2;
+                let y = parseInt(y2);
+                x1 = parseInt(x1);
 
                 while (y < this.trackData.height) {
                     const pixel = this.getColorAtIndex(x1, y);
@@ -381,7 +385,8 @@ class Game {
         }
         else if (y1 === y2) {
             if (x1 > x2) {
-                let x = x2;
+                let x = parseInt(x2);
+                y1 = parseInt(y1);
 
                 while (x > 0) {
                     const pixel = this.getColorAtIndex(x, y1);
@@ -396,7 +401,8 @@ class Game {
                 }
             }
             else {
-                let x = x2;
+                let x = parseInt(x2);
+                y1 = parseInt(y1);
 
                 while (x < this.trackData.width) {
                     const pixel = this.getColorAtIndex(x, y1);
