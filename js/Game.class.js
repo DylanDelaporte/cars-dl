@@ -224,12 +224,12 @@ class Game {
 
             this.context.translate(posX, posY + height / 2);
             this.context.rotate(angle*Math.PI/180);
-            //this.context.fillStyle = '#000000';
-            //this.context.fillRect(0, - height/2, width, height);
-            //this.context.fillStyle = '#ff0000';
-            //this.context.fillRect(-1, -1, 2, 2);
+            this.context.fillStyle = '#000000';
+            this.context.fillRect(0, - height/2, width, height);
+            this.context.fillStyle = '#ff0000';
+            this.context.fillRect(-1, -1, 2, 2);
 
-            this.context.drawImage(this.carImage, 0, -height/2, width, /*(this.carImage.height / this.carImage.width) * width*/height);
+            //this.context.drawImage(this.carImage, 0, -height/2, width, /*(this.carImage.height / this.carImage.width) * width*/height);
 
             this.context.rotate(-angle*Math.PI/180);
             this.context.translate(-posX, -(posY + height/2));
@@ -237,55 +237,44 @@ class Game {
             let computedX = posX + (width * Math.cos(car.angle*Math.PI/180));
             let computedY = posY + (height/2) - (width * Math.sin(car.angle*Math.PI/180));
 
-            //console.log('computed position', computedX, computedY, car.angle, Math.cos(car.angle*Math.PI/180), Math.sin(car.angle*Math.PI/180));
-
-            this.context.fillStyle = '#00ffff';
-            this.context.fillRect(computedX, computedY, 2, 2);
-
-            let computedX90 = posX - (height/2) - (width * Math.cos((car.angle - 90)*Math.PI/180));
-            let computedY90 = posY + (height/2) - (width * Math.sin((car.angle - 90)*Math.PI/180));
-
-            //let yB = posX - ((height/2)) * Math.sin(car.angle*Math.PI/180);
-            //let xB = posY + height/2 + ((height/2) * Math.sin(car.angle*Math.PI/180));
+            this.context.fillStyle = '#ff1a27';
+            this.context.fillRect(computedX, computedY, 3, 3);
 
             let xB = posX - ((height/2)*Math.sin((car.angle)*Math.PI/180));
             let yB = posY + (height/2) - ((height/2)*Math.cos((car.angle)*Math.PI/180));
 
-            this.context.fillRect(xB, yB, 2, 2);
+            let xH = xB + (width/2);
+            let yH = yB;
 
-            //console.log('xB', xB, yB, ((height/2)*Math.cos((car.angle + 90)*Math.PI/180)), ((height/2)*Math.sin((car.angle + 90)*Math.PI/180)), Math.sin((car.angle + 90)*Math.PI/180));
+            this.context.fillRect(xB, yB, 3, 3);
+            this.context.fillRect(xH, yH, 3, 3);
 
             let xD = computedX - posX + xB;
             let yD = computedY - (posY + (height/2)) + yB;
 
-            this.context.fillRect(xD, yD, 2, 2);
-
-            //let xE = posX - (xB - posY);
-            //let yE = (posY + (height/2)) - (yB - (posY + (height/2)));
+            this.context.fillRect(xD, yD, 3, 3);
 
             let xE = posX + ((height/2)*Math.sin((car.angle)*Math.PI/180));
             let yE = posY + (height/2) + ((height/2)*Math.cos((car.angle)*Math.PI/180));
 
-            //console.log('e', ((height/2)*Math.sin((car.angle)*Math.PI/180)), (height) - ((height/2)*Math.cos((car.angle)*Math.PI/180)));
+            let xG = xE + (width/2);
+            let yG = yE;
 
-            this.context.fillRect(xE, yE, 2, 2);
+            this.context.fillRect(xE, yE, 3, 3);
+            this.context.fillRect(xG, yG, 3, 3);
 
             let xF = computedX - (xD - computedX);
             let yF = computedY - (yD - computedY);
 
-            this.context.fillRect(xF, yF, 2, 2);
+            this.context.fillRect(xF, yF, 3, 3);
 
             let sensor1 = this.maxDistanceCollision(computedX, computedY, xD, yD);
             let sensor2 = this.maxDistanceCollision(xB, yB, xD, yD);
             let sensor3 = this.maxDistanceCollision(posX, (posY + (height/2)), computedX, computedY);
             let sensor4 = this.maxDistanceCollision(xE, yE, xF, yF);
             let sensor5 = this.maxDistanceCollision(computedX, computedY, xF, yF);
-
-            //let sensor6 = this.maxDistanceCollision(computedX, computedY, posX, (posY + (height/2)));
-
-            //console.log('xD left', sensor1, this.maxDistanceCollision(computedX, computedY, xD, yD));
-            //console.log('xF right', sensor6, this.maxDistanceCollision(computedX, computedY, xF, yF));
-            //console.log('computer top', sensor5, this.maxDistanceCollision(posX, (posY + (height/2)), computedX, computedY));
+            let sensor6 = this.maxDistanceCollision(xH, yH, xG, yG);
+            let sensor7 = this.maxDistanceCollision(xG, yG, xH, yH);
 
             if (sensor1 > 50) sensor1 = 50;
             if (sensor2 > 50) sensor2 = 50;
@@ -330,6 +319,7 @@ class Game {
             this.start();
         }
         else {
+            /*
             if (!this.stopDraw && !this.pauseDraw) {
                 const that = this;
 
@@ -337,6 +327,7 @@ class Game {
                     that.draw();
                 }, 1000 / this.fps);
             }
+            */
         }
     }
 
