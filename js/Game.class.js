@@ -243,22 +243,30 @@ class Game {
             let xB = posX - ((height/2)*Math.sin((car.angle)*Math.PI/180));
             let yB = posY + (height/2) - ((height/2)*Math.cos((car.angle)*Math.PI/180));
 
-            let xH = xB + (width/2);
-            let yH = yB;
+
 
             this.context.fillRect(xB, yB, 3, 3);
-            this.context.fillRect(xH, yH, 3, 3);
 
             let xD = computedX - posX + xB;
             let yD = computedY - (posY + (height/2)) + yB;
+
+            let computedX2 = posX + ((width/2) * Math.cos(car.angle*Math.PI/180));
+            let computedY2 = posY + (height/2) - ((width/2) * Math.sin(car.angle*Math.PI/180));
+
+            this.context.fillRect(computedX2, computedY2, 3, 3);
+
+            let xH = computedX2 - posX + xB;
+            let yH = computedY2 - (posY + (height/2)) + yB;
+
+            this.context.fillRect(xH, yH, 3, 3);
 
             this.context.fillRect(xD, yD, 3, 3);
 
             let xE = posX + ((height/2)*Math.sin((car.angle)*Math.PI/180));
             let yE = posY + (height/2) + ((height/2)*Math.cos((car.angle)*Math.PI/180));
 
-            let xG = xE + (width/2);
-            let yG = yE;
+            let xG = computedX2 - (xH - computedX2);
+            let yG = computedY2 - (yH - computedY2);
 
             this.context.fillRect(xE, yE, 3, 3);
             this.context.fillRect(xG, yG, 3, 3);
@@ -273,8 +281,15 @@ class Game {
             let sensor3 = this.maxDistanceCollision(posX, (posY + (height/2)), computedX, computedY);
             let sensor4 = this.maxDistanceCollision(xE, yE, xF, yF);
             let sensor5 = this.maxDistanceCollision(computedX, computedY, xF, yF);
-            let sensor6 = this.maxDistanceCollision(xH, yH, xG, yG);
-            let sensor7 = this.maxDistanceCollision(xG, yG, xH, yH);
+
+            //let sensor6 = this.maxDistanceCollision(xH, yH, xG, yG);
+            //let sensor7 = this.maxDistanceCollision(xG, yG, xH, yH);
+            //let sensor8 = this.maxDistanceCollision(xB, yB, xE, yE);
+            //let sensor9 = this.maxDistanceCollision(xE, yE, xB, yB);
+            //let sensor10 = this.maxDistanceCollision(xD, yD, xB, yB);
+            //let sensor11 = this.maxDistanceCollision(xF, yF, xE, yE);
+            //let sensor12 = this.maxDistanceCollision(xB, yB, xF, yF);
+            //let sensor13 = this.maxDistanceCollision(xE, yE, xD, yD);
 
             if (sensor1 > 50) sensor1 = 50;
             if (sensor2 > 50) sensor2 = 50;
@@ -284,13 +299,13 @@ class Game {
 
             //console.log(sensor1, sensor2, sensor3, sensor4, sensor5);
 
-            if (sensor1 < 1 || sensor2 < 1 || sensor5 < 1/* || sensor6 < 1*/) {
+            if (sensor1 < 1 || sensor2 < 1 || sensor5 < 1/* || sensor6 < 1 || sensor7 < 1/* || sensor6 < 1*/) {
                 //console.log("collision");
                 car.alive = false;
                 countDead++;
             }
 
-            const outputs = car.network.compute([sensor1, sensor2, sensor3, sensor4, sensor5]);
+            const outputs = car.network.compute([sensor1, sensor2, sensor3, sensor4, sensor5/**//*, sensor6, sensor7/*, sensor8, sensor9, sensor10, sensor11*//*, sensor12, sensor13*/]);
 
             const distance = car.drive(outputs[0], outputs[1]);
 
@@ -319,7 +334,6 @@ class Game {
             this.start();
         }
         else {
-            /*
             if (!this.stopDraw && !this.pauseDraw) {
                 const that = this;
 
@@ -327,7 +341,6 @@ class Game {
                     that.draw();
                 }, 1000 / this.fps);
             }
-            */
         }
     }
 
